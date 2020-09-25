@@ -1,0 +1,45 @@
+html,body
+{height: 100%;
+}
+body{
+    background-color:#8E9AAF ;
+}
+
+#contanier1{
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+#wrap{
+    width: 50%;
+    height: 80%;
+    border: 3px solid black;
+    border-radius: 5px;
+    margin: auto;
+    padding: 5px;
+    background-color: #CBC0D3;
+}
+
+.box1{
+    width: 80%;
+    margin: auto;
+    text-align: center;
+    border: 2px solid black;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#wrap a{
+    display: inline-block;
+    width: 100%;
+    font-weight: bold;
+    background-color:#EFD3D7;
+}
+
+.linkStyle:hover{
+    border-color: wheat;
+    background-color: #FEEAFA;
+    color: tomato;
+}
+
