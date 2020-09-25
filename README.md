@@ -1,6 +1,8 @@
 # fontEnd_Route
 # 🚗 My FontEnd Route
 
+[首页查看](https://eternaldeath.github.io/fontEnd_Route/index.html)
+
 ## 💻 小项目链接
 
 #### 小玩意儿
