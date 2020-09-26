@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<!-- position 实现菜单效果 -->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+        <style>
+            *{
+                margin: 0;
+                padding: 0;
+            }
+            li{
+                list-style-type: none;
+            }
+
+            #contanier{
+                border: 1px solid black;
+                width: 100px;
+                position:relative;
+                margin: 20px auto;
+            }
+
+            #ul1{
+                width: 100px;
+                position:absolute;
+                border: 1px solid black;
+                background: white;
+                left: 0;
+                display: none;
+                cursor: pointer;
+            }
+
+            #contanier:hover ul{
+                display: block;
+            }
+
+            #ul1 li:hover{
+                background-color: teal;
+            } 
+
+            p{
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="contanier">
+            菜单头
+            <ul id="ul1">
+                <li class="li">菜单内容</li>
+                <li class="li">菜单内容</li>
+                <li class="li">菜单内容</li>
+                <li class="li">菜单内容</li>
+            </ul>
+        </div>
+        <p>其他内容其他内容其他内容</p>
+    </body>
+</html>
