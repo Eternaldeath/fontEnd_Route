@@ -14,6 +14,10 @@
 
 [斜切导航](https://eternaldeath.github.io/fontEnd_Route/斜切导航/index.html)
 
+[滑入滑出效果](https://eternaldeath.github.io/fontEnd_Route/滑入滑出效果/index.html)
+
+[加载效果](https://eternaldeath.github.io/fontEnd_Route/CSS 实现加载效果/index.html)
+
 #### 仿站
 [博文尚美首页仿站](https://eternaldeath.github.io/fontEnd_Route/wholePage/index.html)
 

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+        <style>
+            *{margin: 0;padding: 0;}
+            ul{list-style: none;}
+            ul{width: 180px;margin: 30px auto;}
+            ul li{float: left;width: 50px;height: 50px;margin-left: 10px;}
+            ul li img{width: 100%;height: 100%;}
+            ul li:hover img{animation: move .5s;}
+            @keyframes move{
+                0%{transform: translate(0,0); opacity: 1;}
+                60%{transform: translate(0,-50px); opacity: 0;}
+                61%{transform: translate(0,30px); opacity: 1;}
+                0%{transform: translate(0,0); opacity: 1;}
+            }
+        </style>
+    </head>
+    <body>
+        <ul>
+            <li><img src="./image/img1.png" alt=""></li>
+            <li><img src="./image/img2.png" alt=""></li>
+            <li><img src="./image/img3.png" alt=""></li>
+        </ul>
+    </body>
+</html>
