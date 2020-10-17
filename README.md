@@ -21,6 +21,8 @@
 
 [旋转木马](https://eternaldeath.github.io/fontEnd_Route/旋转木马/index.html)
 
+[渐变进度条](https://eternaldeath.github.io/fontEnd_Route/渐变进度条/index.html)
+
 [盒子阴影](https://eternaldeath.github.io/fontEnd_Route/盒子阴影/index.html)
 
 #### 仿站
