@@ -30,3 +30,4 @@
 
 [流式布局首页仿站(浏览器下切换成移动端模式)](https://eternaldeath.github.io/fontEnd_Route/lagou/index.html)
 
+[响应式博客首页](https://eternaldeath.github.io/fontEnd_Route/blog/index.html)
