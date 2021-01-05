@@ -25,6 +25,8 @@
 
 [盒子阴影](https://eternaldeath.github.io/fontEnd_Route/盒子阴影/index.html)
 
+[时钟](https://eternaldeath.github.io/fontEnd_Route/时钟/[盒子阴影](https://eternaldeath.github.io/fontEnd_Route/盒子阴影/index.html).html)
+
 #### 仿站
 [博文尚美首页仿站](https://eternaldeath.github.io/fontEnd_Route/wholePage/index.html)
 
