@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{margin: 0;padding: 0;}
+        #div1,#div2{border: 2px solid black;margin: 30px auto;width: 70px;height: 40px; text-align: center;font-weight: bold;line-height: 40px;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;}
+
+        #div2{margin: 60px auto;}
+    </style>
+</head>
+<body>
+    <div id="div1">1234</div>
+    <div id="div2">1234</div>
+
+    <script>
+        var codeArea = document.querySelector("#div1");
+        var codeArea_2 = document.querySelector("#div2");
+        
+
+        // 纯数字验证码
+        function numTestCode(){
+            var arr = [];
+            var codeColor = parseInt(Math.random()*1000);
+            for(var i=0;i<4;i++){
+                var num = parseInt(Math.random()*10);
+                arr.push(num);
+            }
+            codeArea.innerHTML = arr.join(" ");
+            codeArea.style.color = "#"+codeColor.toString();
+        }
+
+        numTestCode();
+
+        // 数字+字母验证码
+        // 方法一：将数字和字母全部装入一个数组中进行随机
+        // 方法二：对字母进行 ADSCLL 码值的随机
+
+        function numTestCode_2(){
+            var arr = [];
+            var codeColor = parseInt(Math.random()*1000);
+            for(var i=0;i<4;i++){
+                var num  = parseInt(Math.random()*123);
+                if(num>=0&&num<=9){
+                    arr.push(num);
+                }else if(num>=97 && num <=122 || num>=65 && num<=90){
+                    arr.push(String.fromCharCode(num));
+                }else{
+                    // 用于消除无效数的影响，因为这里面还存在不对应的数
+                    i--;
+                }
+            }
+            codeArea_2.innerHTML =  arr.join(" ");
+            codeArea.style.color = "#"+codeColor.toString();
+        }
+        numTestCode_2();
+
+    </script>
+</body>
+</html>
