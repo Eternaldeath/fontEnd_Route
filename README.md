@@ -29,6 +29,8 @@
 
 [时钟](https://eternaldeath.github.io/fontEnd_Route/时钟/5_css与js结合的时钟.html)
 
+[时钟](https://eternaldeath.github.io/fontEnd_Route/秒表/14秒表.html)
+
 [简易的验证码](https://eternaldeath.github.io/fontEnd_Route/verCode/01验证码.html)
 
 #### 仿站
