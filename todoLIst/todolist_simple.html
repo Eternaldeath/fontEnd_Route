@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./bootstrap.css">
+    <style>
+        /* 简单版样式重置 */
+        *{margin: 0;padding: 0;}
+        ul,ol{list-style: none;}
+        a{text-decoration: none;color: #666;}
+        img{display: block;}
+        h1,h2,h3{font-size: 16px}
+        body{font-family: Arial;font-size:16px}
+
+        .l{float: left;}
+        .r{float: right;}
+        .clear::after{content: "";display: block;clear: both;}
+
+        /* 主体样式 */
+        body{background: lightgrey;}
+        #container{width: 70%;margin: 30px auto;}
+        h2 .version{font-size: 10px;}
+        /* 设置条目 */
+        .listOne{display: flex;align-items: center;height: 50px; border: 1px solid lightslategray; border-radius: 5px;margin-bottom: 5px;transition: all .5s;}
+        .listOne:hover{border-color: black; border-width:3px}
+
+        /* 设置输入框 */
+        .inputBlock{height: 100%;}
+        .inputText{width: 100%;height: 100%;border: none; background-color: lightgrey;outline: none;}
+        /* 设置按钮组 */
+        .inputBtn{text-align: center;}
+        /* 设置按钮 */
+        /* .addItem,.deleteItem,.finishItem{height: 80%;margin-left: 3px;} */
+
+        /* 通知框 */
+        .info .info_content{width: 95%;display: inline-block;}
+        .info .info_close{border: 1px solid;padding: 3px; font-weight: bold;display: inline-block;cursor: pointer;}
+    </style>
+</head>
+<body>
+    <!-- 通知栏 -->
+    
+    <div id="container">
+        <div class="alert alert-danger info .d-flex" role="alert">
+            <span class="info_content"> v1.0 功能正在加急开发中</span>
+            <span class="info_close">X</span>
+          </div>
+        <h2 class="h2" title="TodoList">TodoList&nbsp&nbsp
+            <sub class="version">
+                <span class="badge badge-success">v1.0 测试版</span>
+                <span>【当前版本未进行响应式布局，请在 PC 端使用】</span>
+            </sub>
+        </h2>
+        <ul id="listBody row">
+            <li class="listOne row">
+                <div class="inputBlock col-9">
+                    <input class="inputText" type="text" value="这是一个范例" placeholder="从这里开始">
+                </div>
+                <div class="inputBtn col-3">
+                    <button class="addItem btn btn-outline-primary">增加</button>
+                    <button class="deleteItem btn btn-outline-danger">删除</button>
+                    <button class="finishItem btn btn-outline-success">完成</button>
+                </div>
+            </li>
+            <li class="listOne row">
+                <div class="inputBlock col-9">
+                    <input class="inputText" type="text" placeholder="从这里开始">
+                </div>
+                <div class="inputBtn col-3">
+                    <button class="addItem btn btn-outline-primary">增加</button>
+                    <button class="deleteItem btn btn-outline-danger">删除</button>
+                    <button class="finishItem btn btn-outline-success">完成</button>
+                </div>
+            </li>
+
+        </ul>
+    </div>
+
+    <script src="./jquery-3.4.1.js"></script>
+    <script src="./bootstrap.js"></script>
+    <script>
+        // 全局变量
+        // 获取按钮
+        var btnAdd = document.querySelectorAll(".addItem");
+        var btnDel = document.querySelectorAll(".deleteItem");
+        var btnFinish = document.querySelectorAll(".finishItem");
+
+        // 获取文本
+        var curText = document.querySelectorAll(".inputText");
+
+        // 获取列表
+        var ulList = document.querySelector("ul");
+        var listOne = document.querySelectorAll(".listOne");
+
+        // 获取通知栏
+        var infoX = document.querySelector(".info_close");
+        var info = document.querySelector(".info");
+
+
+        // 加载后进行
+        window.onload = function(){
+            // 增加一个项目
+            for(var i=0;i<btnAdd.length;i++){
+                btnAdd[i].index = i;
+                btnAdd[i].onclick = function(){
+                    var newLi = document.createElement("li");
+                    var div1 = document.createElement("div");
+                    var div2 = document.createElement("div");
+                    var inputText = document.createElement("input");
+                    var btn1 = document.createElement("button");
+                    var btn2 = document.createElement("button");
+                    var btn3 = document.createElement("button");
+
+                    // 设置属性和类
+                    newLi.setAttribute("class","listOne row");
+                    div1.setAttribute("class","inputBlock col-9");
+                    div2.setAttribute("class","inputBtn col-3");
+                    inputText.setAttribute("class","inputText");
+                    inputText.setAttribute("type","text");
+                    inputText.setAttribute("placeholder","从这里开始");
+                    btn1.setAttribute("class","addItem btn btn-outline-primary");
+                    btn2.setAttribute("class","deleteItem btn btn-outline-danger");
+                    btn3.setAttribute("class","finishItem btn btn-outline-success");
+
+                    // 设置插入文本
+                    var add = document.createTextNode("增加");
+                    var del = document.createTextNode("删除");
+                    var fin = document.createTextNode("完成");
+
+                    // 增加节点
+                    ulList.appendChild(newLi);
+                    newLi.appendChild(div1);
+                    newLi.appendChild(div2);
+                    div1.appendChild(inputText);
+                    div2.appendChild(btn1);
+                    div2.appendChild(btn2);
+                    div2.appendChild(btn3);
+                    btn1.appendChild(add);
+                    btn2.appendChild(del);
+                    btn3.appendChild(fin);
+
+            }
+            }
+
+            // 删除一个项目
+            for(var i=0;i<btnDel.length;i++){
+                btnDel[i].index = i;
+                btnDel[i].onclick = function(){
+                    ulList.removeChild(listOne[this.index]);
+            }
+            }
+
+            // 完成一个项目
+            // 实现原理
+            /* 每次遍历都为按钮对象设置一个 index 属性，将 i 值传给 index 属性，通过 this 来取得对应的 i ，这里就没有使用闭包。注意，要获取按钮和文本的集合 */
+            for(var i=0;i<btnFinish.length;i++){
+                btnFinish[i].index = i;
+                // curText[i].index = i;
+                btnFinish[i].onclick = function(){
+                    curText[this.index].style.textDecoration = "line-through";
+                // this.curText.style.textDecoration = "line-through";
+            }
+            }
+
+        }
+
+        // 通知栏
+        infoX.onclick = function(){
+            // 点击关闭
+            info.setAttribute("style","display:none");
+        }
+    </script>
+</body>
+</html>
