@@ -33,6 +33,10 @@
 
 [简易的验证码](https://eternaldeath.github.io/fontEnd_Route/verCode/01验证码.html)
 
+[选项卡](https://eternaldeath.github.io/fontEnd_Route/选项卡/08选项卡.html)
+
+
+
 #### 仿站
 [博文尚美首页仿站](https://eternaldeath.github.io/fontEnd_Route/wholePage/index.html)
 

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #div1 button{width: 100px; height: 30px; background-color: gray;color: white;font-size: 10px;}
+        #div1 .active{background-color: orange; border: 1px solid black;}
+        #div1 div{width: 340px; height: 300px; border: 1px solid black; display: none;}
+    </style>
+</head>
+<body>
+    <div id="div1">
+        <button class="active">HTML5</button>
+        <button>Python</button>
+        <button>Java</button>
+        <div style="display: block;">html5</div>
+        <div>Python</div>
+        <div>Java</div>
+    </div>
+
+    <script>
+        var oDiv1 = document.getElementById("div1");
+        var aBtns = oDiv1.getElementsByTagName("button");
+        var aDivs = oDiv1.getElementsByTagName("div");
+
+        for(var i=0;i<aBtns.length;i++){
+            aBtns[i].index = i;
+            aBtns[i].onclick = function(){
+                for(var j=0;j<aBtns.length;j++){
+                    aBtns[j].className = '';
+                    aDivs[j].style.display='none';
+                }
+                // alert(this.index);
+                aDivs[this.index].style.display = 'block';
+                this.className = 'active';
+            }
+        }
+    </script>
+</body>
+</html>
