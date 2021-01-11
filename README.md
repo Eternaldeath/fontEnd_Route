@@ -35,6 +35,10 @@
 
 [选项卡](https://eternaldeath.github.io/fontEnd_Route/选项卡/08选项卡.html)
 
+[鼠标跟随移动](https://eternaldeath.github.io/fontEnd_Route/鼠标跟随移动/09跟随鼠标移动.html)
+
+
+
 
 
 #### 仿站
