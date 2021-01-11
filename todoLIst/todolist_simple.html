@@ -44,7 +44,7 @@
     
     <div id="container">
         <div class="alert alert-danger info .d-flex" role="alert">
-            <span class="info_content"> v1.0 功能正在加急开发中</span>
+            <span class="info_content"> v1.0 基本功能完成，下一步将添加记录时间</span>
             <span class="info_close">X</span>
           </div>
         <h2 class="h2" title="TodoList">TodoList&nbsp&nbsp
@@ -60,7 +60,7 @@
                 </div>
                 <div class="inputBtn col-3">
                     <button class="addItem btn btn-outline-primary">增加</button>
-                    <button class="deleteItem btn btn-outline-danger">删除</button>
+                    <button class="deleteItem btn btn-outline-danger" disabled>删除</button>
                     <button class="finishItem btn btn-outline-success">完成</button>
                 </div>
             </li>
@@ -102,66 +102,98 @@
         // 加载后进行
         window.onload = function(){
             // 增加一个项目
-            for(var i=0;i<btnAdd.length;i++){
-                btnAdd[i].index = i;
-                btnAdd[i].onclick = function(){
-                    var newLi = document.createElement("li");
-                    var div1 = document.createElement("div");
-                    var div2 = document.createElement("div");
-                    var inputText = document.createElement("input");
-                    var btn1 = document.createElement("button");
-                    var btn2 = document.createElement("button");
-                    var btn3 = document.createElement("button");
+            // for(var i=0;i<btnAdd.length;i++){
+            //     btnAdd[i].index = i;
+            //     btnAdd[i].onclick = function(){
+            //         var newLi = document.createElement("li");
+            //         var div1 = document.createElement("div");
+            //         var div2 = document.createElement("div");
+            //         var inputText = document.createElement("input");
+            //         var btn1 = document.createElement("button");
+            //         var btn2 = document.createElement("button");
+            //         var btn3 = document.createElement("button");
 
-                    // 设置属性和类
-                    newLi.setAttribute("class","listOne row");
-                    div1.setAttribute("class","inputBlock col-9");
-                    div2.setAttribute("class","inputBtn col-3");
-                    inputText.setAttribute("class","inputText");
-                    inputText.setAttribute("type","text");
-                    inputText.setAttribute("placeholder","从这里开始");
-                    btn1.setAttribute("class","addItem btn btn-outline-primary");
-                    btn2.setAttribute("class","deleteItem btn btn-outline-danger");
-                    btn3.setAttribute("class","finishItem btn btn-outline-success");
+            //         // 设置属性和类
+            //         newLi.setAttribute("class","listOne row");
+            //         div1.setAttribute("class","inputBlock col-9");
+            //         div2.setAttribute("class","inputBtn col-3");
+            //         inputText.setAttribute("class","inputText");
+            //         inputText.setAttribute("type","text");
+            //         inputText.setAttribute("placeholder","从这里开始");
+            //         btn1.setAttribute("class","addItem btn btn-outline-primary");
+            //         btn2.setAttribute("class","deleteItem btn btn-outline-danger");
+            //         btn3.setAttribute("class","finishItem btn btn-outline-success");
 
-                    // 设置插入文本
-                    var add = document.createTextNode("增加");
-                    var del = document.createTextNode("删除");
-                    var fin = document.createTextNode("完成");
+            //         // 设置插入文本
+            //         var add = document.createTextNode("增加");
+            //         var del = document.createTextNode("删除");
+            //         var fin = document.createTextNode("完成");
 
-                    // 增加节点
-                    ulList.appendChild(newLi);
-                    newLi.appendChild(div1);
-                    newLi.appendChild(div2);
-                    div1.appendChild(inputText);
-                    div2.appendChild(btn1);
-                    div2.appendChild(btn2);
-                    div2.appendChild(btn3);
-                    btn1.appendChild(add);
-                    btn2.appendChild(del);
-                    btn3.appendChild(fin);
+            //         // 增加节点
+            //         ulList.appendChild(newLi);
+            //         newLi.appendChild(div1);
+            //         newLi.appendChild(div2);
+            //         div1.appendChild(inputText);
+            //         div2.appendChild(btn1);
+            //         div2.appendChild(btn2);
+            //         div2.appendChild(btn3);
+            //         btn1.appendChild(add);
+            //         btn2.appendChild(del);
+            //         btn3.appendChild(fin);
 
-            }
-            }
+            // }
+            // }
 
             // 删除一个项目
-            for(var i=0;i<btnDel.length;i++){
-                btnDel[i].index = i;
-                btnDel[i].onclick = function(){
-                    ulList.removeChild(listOne[this.index]);
-            }
-            }
+            // for(var i=0;i<btnDel.length;i++){
+            //     btnDel[i].index = i;
+            //     btnDel[i].onclick = function(){
+            //         ulList.removeChild(listOne[this.index]);
+            // }
+            // }
 
             // 完成一个项目
             // 实现原理
             /* 每次遍历都为按钮对象设置一个 index 属性，将 i 值传给 index 属性，通过 this 来取得对应的 i ，这里就没有使用闭包。注意，要获取按钮和文本的集合 */
-            for(var i=0;i<btnFinish.length;i++){
-                btnFinish[i].index = i;
-                // curText[i].index = i;
-                btnFinish[i].onclick = function(){
-                    curText[this.index].style.textDecoration = "line-through";
-                // this.curText.style.textDecoration = "line-through";
-            }
+            // for(var i=0;i<btnFinish.length;i++){
+            //     btnFinish[i].index = i;
+            //     // curText[i].index = i;
+            //     btnFinish[i].onclick = function(){
+            //         curText[this.index].style.textDecoration = "line-through";
+            //     // this.curText.style.textDecoration = "line-through";
+            // }
+            // }
+
+            // 新增条目委托
+            ulList.onclick = function(ev){
+                var e = ev || window.event;
+                var target = e.target || window.event.srcElement;
+                if(target.innerHTML == "增加"){
+                    var newLi = target.parentNode.parentNode.cloneNode(true);
+                    newLi.children[0].children[0].value = '';
+                    newLi.children[1].children[1].removeAttribute("disabled");
+                    // 增加节点
+                    // ulList.appendChild(newLi);
+                    ulList.insertBefore(newLi,target.parentNode.parentNode);
+
+                }else if(target.innerHTML == '删除'){
+                    // alert(target.parentNode);
+                    ulList.removeChild(target.parentNode.parentNode);
+                }else if(target.innerHTML == '完成'){
+                    // children 获取子节点
+                    var curItem = target.parentNode.parentNode.children[0].children[0];
+                    // alert(curItem);
+                   curItem.style.textDecoration = "line-through";
+                   target.innerHTML = '取消';
+                   target.setAttribute("class","finishItem btn btn btn-secondary");
+                }else if(target.innerHTML == '取消'){
+                    // children 获取子节点
+                     var curItem = target.parentNode.parentNode.children[0].children[0];
+                    // alert(curItem);
+                   curItem.style.textDecoration = "none";
+                   target.innerHTML = '完成';
+                   target.setAttribute("class","finishItem btn btn btn-success");
+                }
             }
 
         }
