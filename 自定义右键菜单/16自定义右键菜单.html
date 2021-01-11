@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{margin: 0;padding: 0;}
+        #menu{width: 100px; height: 100px; background: lightgray; border: 1px solid darkslategray;display: none; position: absolute;}
+        ul{height: 100%;}
+        li{text-align: center;line-height: 25px;list-style: none;}
+    </style>
+</head>
+<body>
+    <div id="menu">
+        <ul>
+            <li>菜单1</li>
+            <li>菜单2</li>
+            <li>菜单3</li>
+            <li>菜单4</li>
+        </ul>
+    </div>
+    
+    <script>
+        // 禁止右键菜单
+        document.oncontextmenu = function(){
+            return false;
+        }
+
+        var oMenu = document.querySelector("#menu");
+        document.onmousedown = function(ev){
+            var e = ev || window.event;
+            if(e.button == 2){
+                oMenu.style.display = 'block';
+                oMenu.style.left = e.clientX + 'px';
+                oMenu.style.top = e.clientY + 'px';
+            }else{
+                oMenu.style.display = 'none';              
+            }
+        }
+    </script>
+</body>
+</html>
