@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>表单验证和密码强度_正则</title>
+    <style>
+        #div1{width: 250px; height: 250px; border: 1px solid black; padding: 50px; text-align: center; margin: 100px auto; background-color: gainsboro;}
+        #div1 input{width: 250px; height: 30px; font-size: 18px; margin-top: 20px;}
+        #div1 span{margin-top: 15px; font-size: 14px; color: red;}
+        #div1 .testCode{width: 70px; height: 30px; line-height: 30px; background-color: gray; color: white; float: left;margin-left: 12px;margin-top: 10px;}
+    </style>
+</head>
+<body>
+    <div id="div1">
+        <input type="text" id="username" placeholder="用户名">
+        <span id="username_span">6~18个字符，可使用字母，数字，下划线，需要以字母开头</span>
+        <input type="text" id="password" placeholder="密码">
+        <div class="testCode">弱</div>
+        <div class="testCode">中</div>
+        <div class="testCode">强</div>
+    </div>
+
+    <script>
+        var div1 = document.querySelector("#div1");
+        var username = document.querySelector("#username");
+        var password = document.querySelector("#password");
+        var username_span = document.querySelector("#username_span");
+        var divs = div1.getElementsByClassName("testCode");
+
+        // 用户名失去焦点
+        username.onblur = function(){
+           var strUsername = username.value;
+           var uPattern = /^[a-zA-Z0-9_-]{6,18}$/;
+           var res = uPattern.test(strUsername);
+            if(res == true){
+                username_span.style.color = 'green';
+                username_span.innerHTML = '用户名正确';
+            }
+        }
+
+        // 密码强度验证
+        password.onkeyup = function(){
+            var value = this.value;
+            var strongRegex = new RegExp("^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$", "g")  //强
+            var mediumRegex = new RegExp("^(?=.{7,})(((?=.*[A-Z])(?=.*[a-z]))|((?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[0-9]))).*$", "g")  //中
+            var enoughRegex = new RegExp("(?=.{6,}).*", "g") //弱
+            // 每次开始清除本来样式
+            for(var i=0;i<divs.length;i++){
+                divs[i].style.color = 'white';
+                divs[i].style.fontWeight = 'lighter';
+            }
+
+            if(strongRegex.test(value)){
+                divs[2].style.color = 'green';
+                divs[2].style.fontWeight = 'bolder';
+            }else if(mediumRegex.test(value)){
+                divs[1].style.color = 'green';
+                divs[1].style.fontWeight = 'bolder';
+            }else if(enoughRegex.test(value)){
+                divs[0].style.color = 'green';
+                divs[0].style.fontWeight = 'bolder';
+            }
+        }
+
+    </script>
+</body>
+</html>

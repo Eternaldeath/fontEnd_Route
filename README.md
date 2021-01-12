@@ -41,6 +41,8 @@
 
 [放大镜效果](https://eternaldeath.github.io/fontEnd_Route/放大镜效果/20放大镜.html)
 
+[正则表单验证](https://eternaldeath.github.io/fontEnd_Route/正则表单验证/07注册表单验证_正则.html)
+
 
 
 
