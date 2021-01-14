@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #div1{width: 100px;height: 200px; background: #222222; position: absolute; left: -100px; top: 400px;color: #888888;border-top-right-radius: 10px;border-bottom-right-radius: 10px;}
+        #div1 span{width: 20px; height: 60px; background-color: #E74C3C;position: absolute;left: 100px; top: 70px; line-height: 20px; color: white; font-weight: bolder;border-top-right-radius: 5px;border-bottom-right-radius: 5px;padding: 3px;}
+    </style>
+</head>
+<body>
+    <div id="div1">
+        <span>分享到</span>
+    </div>
+
+    <script>
+        window.onload = function(){
+            var div1 = document.querySelector("#div1");
+            div1.onmouseover = function(){
+                startMove(5,0);
+            }
+            div1.onmouseout = function(){
+                EndMove(5,-100);
+            }
+        }
+
+        var timer = null;
+        function startMove(speed,iTarget){
+            var div1 = document.querySelector("#div1");
+            clearInterval(timer);
+            timer = setInterval(function(){
+                if(div1.offsetLeft == iTarget){
+                    clearInterval(timer);
+                }else{
+                    div1.style.left = div1.offsetLeft + speed + 'px';
+                }
+            },30);
+        }
+
+        function EndMove(speed,iTarget){
+            var div1 = document.querySelector("#div1");
+            clearInterval(timer);
+            timer = setInterval(function(){
+                if(div1.offsetLeft == iTarget){
+                    clearInterval(timer);
+                }else{
+                    div1.style.left = div1.offsetLeft - speed + 'px';
+                }
+            },30);
+        }
+    </script>
+</body>
+</html>
