@@ -56,7 +56,7 @@
         <ul id="listBody row">
             <li class="listOne row">
                 <div class="inputBlock col-9">
-                    <input class="inputText" type="text" value="这是一个范例" placeholder="从这里开始">
+                    <input class="inputText" type="text" value="这是一个范例，在上面的操作均不会被记录" placeholder="从这里开始">
                 </div>
                 <div class="inputBtn col-3">
                     <button class="addItem btn btn-outline-primary">增加</button>
@@ -89,6 +89,7 @@
 
         // 获取文本
         var curText = document.querySelectorAll(".inputText");
+        var inputBlock = document.querySelector("inputBlock");
 
         // 获取列表
         var ulList = document.querySelector("ul");
@@ -203,6 +204,27 @@
             // 点击关闭
             info.setAttribute("style","display:none");
         }
+
+        // 本地存储
+        function storyTest()
+        {
+            if(typeof(Storage)!=="undefined")
+            {
+                // alert("支持");
+            }
+            else
+            {
+                alert("你的浏览器不支持");
+            }
+        }
+
+        for(var i=0;i<curText.length;i++){
+            (curText.onclick = function(){
+                alert(i);
+            })();
+        }
+        
+        
     </script>
 </body>
 </html>

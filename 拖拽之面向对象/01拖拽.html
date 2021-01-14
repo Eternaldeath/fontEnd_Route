@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>拖拽之面向对象</title>
+    <link rel="stylesheet" href="./highlight/styles/a11y-dark.css">
+    <style>
+        #div1,#div3,#div4{width: 200px; height: 200px; background: red; position: absolute;left: 40%;}
+
+        #div3{background: blue;top: 30%;}
+        #div4{background: yellow;top: 60%;}
+    </style>
+</head>
+<body>
+    <div id="div1"></div>
+    <div id="div3"></div>
+    <!-- <div id="div4"></div> -->
+    <div id="div2">
+        <pre>
+            <code>
+           // 面向过程实现拖拽：
+            var div1 = document.querySelector("#div1");
+            div1.onmousedown = function(ev){
+                var e = ev || window.event;
+                var offsetX = e.clientX - div1.offsetLeft;
+                var offsetY = e.clientY - div1.offsetTop;
+
+                document.onmousemove = function(ev){
+                    var e = ev||window.event;
+                    div1.style.left = e.clientX - offsetX +"px";
+                    div1.style.top = e.clientY - offsetY +"px";
+                }
+
+                document.onmouseup = function(){
+                    document.onmousemove = null;
+                }
+            }
+        </code>
+        </pre>
+        <pre>
+            <code>
+                // 面向对象-原型链
+                function Drag(id){
+                    this.div3 = document.querySelector("#"+id);
+                    // 这个地方用 bind 好像不行，因为不支持这样的格式
+                    // this.div3.onmousedown = this.funcDown(ev).bind(this);
+                    var _this = this;
+                    this.div3.onmousedown = function(ev){
+                        _this.funcDown(ev);
+                    }
+                    document.onmouseup = this.funcUp;
+                }
+        
+                Drag.prototype.funcDown = function(ev){
+                    var e = ev||window.event;
+                    this.offsetX = e.clientX - this.div3.offsetLeft;
+                    this.offsetY = e.clientY - this.div3.offsetTop;
+        
+                    var _this = this;
+                    document.onmousemove = function(ev){
+                        _this.funcMove(ev);
+                    }
+                }
+        
+                Drag.prototype.funcMove = function(ev){
+                    var e = ev||window.event;
+                    this.div3.style.left = e.clientX - this.offsetX + "px";
+                    this.div3.style.top = e.clientY - this.offsetY + "px";
+                }
+        
+                Drag.prototype.funcUp = function(){
+                    document.onmousemove = null;
+                }
+        
+                new Drag("div3");
+            </code>
+        </pre>
+    </div>
+    <script src="./highlight/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script>
+        window.onload = function(){
+            // 面向过程
+            var div1 = document.querySelector("#div1");
+            div1.onmousedown = function(ev){
+                var e = ev || window.event;
+                var offsetX = e.clientX - div1.offsetLeft;
+                var offsetY = e.clientY - div1.offsetTop;
+
+                document.onmousemove = function(ev){
+                    var e = ev||window.event;
+                    div1.style.left = e.clientX - offsetX +"px";
+                    div1.style.top = e.clientY - offsetY +"px";
+                }
+
+                document.onmouseup = function(){
+                    document.onmousemove = null;
+                }
+            }
+        }
+
+        // 面向对象-原型链
+        function Drag(id){
+            this.div3 = document.querySelector("#"+id);
+            // 这个地方用 bind 好像不行，因为不支持这样的格式
+            // this.div3.onmousedown = this.funcDown(ev).bind(this);
+            var _this = this;
+            this.div3.onmousedown = function(ev){
+                _this.funcDown(ev);
+            }
+            document.onmouseup = this.funcUp;
+        }
+
+        Drag.prototype.funcDown = function(ev){
+            var e = ev||window.event;
+            this.offsetX = e.clientX - this.div3.offsetLeft;
+            this.offsetY = e.clientY - this.div3.offsetTop;
+
+            var _this = this;
+            document.onmousemove = function(ev){
+                _this.funcMove(ev);
+            }
+        }
+
+        Drag.prototype.funcMove = function(ev){
+            var e = ev||window.event;
+            this.div3.style.left = e.clientX - this.offsetX + "px";
+            this.div3.style.top = e.clientY - this.offsetY + "px";
+        }
+
+        Drag.prototype.funcUp = function(){
+            document.onmousemove = null;
+        }
+
+        new Drag("div3");
+
+        // 面向对象实现拖拽限制的继承
+
+
+
+            
+            
+        
+        
+    </script>
+</body>
+</html>
