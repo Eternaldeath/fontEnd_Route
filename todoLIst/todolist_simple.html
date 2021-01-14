@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="./bootstrap.css">
+    <link rel="stylesheet" href="sweetalert2/dist/sweetalert2.min.css">
     <style>
         /* 简单版样式重置 */
         *{margin: 0;padding: 0;}
@@ -37,14 +38,16 @@
         /* 通知框 */
         .info .info_content{width: 95%;display: inline-block;}
         .info .info_close{border: 1px solid;padding: 3px; font-weight: bold;display: inline-block;cursor: pointer;}
+
+        /* 提示框 */
+        /* #prompt{width: 50px; height: 40px;position: fixed; top: 50px; left: 50%; background-color: greenyellow;color: white;z-index:100} */
     </style>
 </head>
 <body>
     <!-- 通知栏 -->
-    
     <div id="container">
         <div class="alert alert-danger info .d-flex" role="alert">
-            <span class="info_content"> v1.0 基本功能完成，下一步将添加记录时间</span>
+            <span class="info_content"> v1.0 基本功能完成</span>
             <span class="info_close">X</span>
           </div>
         <h2 class="h2" title="TodoList">TodoList&nbsp&nbsp
@@ -80,6 +83,8 @@
 
     <script src="./jquery-3.4.1.js"></script>
     <script src="./bootstrap.js"></script>
+    <!-- 弹出框插件 -->
+    <script src="sweetalert2/dist/sweetalert2.min.js"></script>
     <script>
         // 全局变量
         // 获取按钮
@@ -102,6 +107,12 @@
 
         // 加载后进行
         window.onload = function(){
+            Swal.fire({
+                title:'Tips',
+                text:'1. 完成基本操作 2.实现本地存储，数据存储在浏览器中',
+                icon:'info',
+                timer:5000,
+            })
             // 增加一个项目
             // for(var i=0;i<btnAdd.length;i++){
             //     btnAdd[i].index = i;
@@ -178,8 +189,21 @@
                     ulList.insertBefore(newLi,target.parentNode.parentNode);
 
                 }else if(target.innerHTML == '删除'){
-                    // alert(target.parentNode);
-                    ulList.removeChild(target.parentNode.parentNode);
+                       var delTarget =  target.parentNode.parentNode.children[0].children[0].value;
+                       if(delTarget != '这是一个范例，在上面的操作均不会被记录'){
+                            localStorage.removeItem(delTarget);
+                       }
+                        ulList.removeChild(target.parentNode.parentNode);
+                        // 删除提示框
+                        Swal.fire({
+                            title:'',
+                            text:'删除成功',
+                            icon:'success',
+                            timer:2000,
+                            position:'top-end',
+                            // width:12,
+                            showConfirmButton:false
+                        })
                 }else if(target.innerHTML == '完成'){
                     // children 获取子节点
                     var curItem = target.parentNode.parentNode.children[0].children[0];
@@ -205,7 +229,7 @@
             info.setAttribute("style","display:none");
         }
 
-        // 本地存储
+        // 检测是否能进行本地存储
         function storyTest()
         {
             if(typeof(Storage)!=="undefined")
@@ -218,11 +242,52 @@
             }
         }
 
-        for(var i=0;i<curText.length;i++){
-            (curText.onclick = function(){
-                alert(i);
-            })();
+        // 本地存储
+        ulList.onmouseover = function(ev){
+            var e = ev||window.event;
+            var target = e.target || window.event.srcElement;
+            if(target.nodeName.toLowerCase() == 'input'){
+                var curTargetValue = target.value;
+                // 目标失去焦点的时候保存
+                target.onblur = function(){
+                    if(target.value != curTargetValue){
+                        localStorage.setItem(target.value,target.value);
+                        // console.log("保存成功");
+                            // 保存提示框
+                            Swal.fire({
+                            title:'',
+                            text:'保存成功',
+                            icon:'success',
+                            timer:2000,
+                            position:'top-end',
+                            showConfirmButton:false,
+                            // width:12,
+                            // height:100,
+                        })
+                    }
+                }
+            }
         }
+
+        // 本地取值
+        function getItem(){
+            var locLength = localStorage.length;
+            for(var i=0;i<locLength;i++){
+                var exampleNode = document.querySelector(".listOne");
+                var key = localStorage.key(i);
+                var newLi = exampleNode.cloneNode(true);
+                    newLi.children[0].children[0].value = localStorage.getItem(key);
+                    newLi.children[1].children[1].removeAttribute("disabled");
+                    // 增加节点
+                    // ulList.appendChild(newLi);
+                    ulList.appendChild(newLi);
+                
+            }
+        }
+
+        getItem();
+
+
         
         
     </script>
