@@ -40,10 +40,11 @@
         .info .info_close{border: 1px solid;padding: 3px; font-weight: bold;display: inline-block;cursor: pointer;}
 
         /* 提示框 */
-        /* #prompt{width: 50px; height: 40px;position: fixed; top: 50px; left: 50%; background-color: greenyellow;color: white;z-index:100} */
+        #prompt{width: 100px; height: 40px;position: fixed; top: -50px; left: 50%; background-color: #99D489;color: black;z-index:100;padding: 5px; text-align: center;box-shadow: 5px 5px 5px #888888;border-radius: 5px;line-height: 40px;transition: all .5s;font-weight: bolder;}
     </style>
 </head>
 <body>
+    <div id="prompt">保存成功!</div>
     <!-- 通知栏 -->
     <div id="container">
         <div class="alert alert-danger info .d-flex" role="alert">
@@ -189,21 +190,31 @@
                     ulList.insertBefore(newLi,target.parentNode.parentNode);
 
                 }else if(target.innerHTML == '删除'){
+                        var prompt = document.querySelector("#prompt");
                        var delTarget =  target.parentNode.parentNode.children[0].children[0].value;
                        if(delTarget != '这是一个范例，在上面的操作均不会被记录'){
                             localStorage.removeItem(delTarget);
                        }
                         ulList.removeChild(target.parentNode.parentNode);
                         // 删除提示框
-                        Swal.fire({
-                            title:'',
-                            text:'删除成功',
-                            icon:'success',
-                            timer:2000,
-                            position:'top-end',
-                            // width:12,
-                            showConfirmButton:false
-                        })
+                       prompt.style.top = 50+'px';
+                       prompt.style.backgroundColor = 'pink';
+                       prompt.innerHTML = '删除成功！';
+                       setTimeout(function(){ 
+                           prompt.style.top = -50+'px'; 
+                           prompt.style.backgroundColor = '#99D489';
+                            prompt.innerHTML = '保存成功！';
+                        }, 1000);
+
+                        // Swal.fire({
+                        //     title:'',
+                        //     text:'删除成功',
+                        //     icon:'success',
+                        //     timer:2000,
+                        //     position:'top-end',
+                        //     // width:12,
+                        //     showConfirmButton:false
+                        // })
                 }else if(target.innerHTML == '完成'){
                     // children 获取子节点
                     var curItem = target.parentNode.parentNode.children[0].children[0];
@@ -244,6 +255,7 @@
 
         // 本地存储
         ulList.onmouseover = function(ev){
+            var prompt = document.querySelector("#prompt");
             var e = ev||window.event;
             var target = e.target || window.event.srcElement;
             if(target.nodeName.toLowerCase() == 'input'){
@@ -252,18 +264,20 @@
                 target.onblur = function(){
                     if(target.value != curTargetValue){
                         localStorage.setItem(target.value,target.value);
+                        prompt.style.top = 50+'px';
+                        setTimeout(function(){ prompt.style.top = -50+'px';; }, 1000);
                         // console.log("保存成功");
                             // 保存提示框
-                            Swal.fire({
-                            title:'',
-                            text:'保存成功',
-                            icon:'success',
-                            timer:2000,
-                            position:'top-end',
-                            showConfirmButton:false,
-                            // width:12,
-                            // height:100,
-                        })
+                        //     Swal.fire({
+                        //     title:'',
+                        //     text:'保存成功',
+                        //     icon:'success',
+                        //     timer:2000,
+                        //     position:'top-end',
+                        //     showConfirmButton:false,
+                        //     // width:12,
+                        //     // height:100,
+                        // })
                     }
                 }
             }
