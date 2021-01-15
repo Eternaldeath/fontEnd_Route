@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>打砖块</title>
+    <style>
+        body{background-image: url('./game.jpeg');}
+
+        #div1{width: 600px; height: 600px; border: 5px solid black; position: relative; margin: 0 auto;}
+        #ball{width: 20px; height: 20px; background-color: red; border-radius: 50%; position: absolute;bottom: 30px;left: 300px;}
+        #bat{width: 100px; height: 30px; background-color: grey; position:absolute; bottom: 0; left: 250px;border: 3px solid black;}
+        #brick div{width: 98px; height: 18px; border: 1px solid black; float: left;}
+
+        #game_info{width: 300px; height: 300px; background-color: black;opacity: .5;filter: alpha(opacity=50);border: 1px solid #38DA38;color: #38DA38;position: absolute; right: 100px;top: 30px;padding: 10px;}
+        #game_info h2{border-bottom: 3px solid #38DA38;}
+    </style>
+</head>
+<body>
+    <div id="div1">
+        <div id="ball"></div>
+        <div id="bat"></div>
+        <div id="brick">
+            <!-- <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div> -->
+        </div>
+    </div>
+    <div id="game_info">
+        <h2>游戏信息</h2>
+        <p>游戏的分</p>
+        <span id="score">0</span>
+    </div>
+
+    <script>
+        window.onload = function(){
+            var div1 = document.querySelector("#div1");
+            var ball = document.querySelector("#ball");
+            var bat = document.querySelector("#bat");
+            var brick = document.querySelector("#brick");
+            var bricks = brick.getElementsByTagName("div");
+            var score = document.querySelector("#score");
+
+            // 启动板子
+            dragX(bat);
+            // 生成砖块
+            createBrick(90);
+
+            // 水平运动
+            // 获取一个 3~6 间的随机速度
+            var speedX = parseInt((Math.random()*4)) +6;
+            // 垂直运动
+            var speedY = -(parseInt((Math.random()*3)) +6);
+
+            var timer = null;
+            timer = setInterval(function(){
+                ball.style.left = ball.offsetLeft + speedX + 'px';
+                ball.style.top = ball.offsetTop + speedY + 'px';
+                if(ball.offsetLeft >= 580 || ball.offsetLeft <= 0){
+                    speedX *= -1;
+                }
+
+                if(ball.offsetTop <= 0){
+                    speedY *= -1;
+                }
+                if(ball.offsetTop>=580){
+                    clearInterval(timer);
+                    alert("失败了");
+                    window.location.reload();
+                }
+
+                // 调用碰撞检测
+                if(konck(ball,bat)){
+                    speedY *= -1;
+                }
+
+                for(var i=0;i<bricks.length;i++){
+                    if(konck(bricks[i],ball)){
+                        speedY *= -1;
+                        brick.removeChild(bricks[i]);
+                        var tempScore = score.innerHTML;
+                        score.innerHTML = parseInt( tempScore)+1;
+                        if(score == 90){
+                            clearInterval(timer);
+                            alert("成功了！");
+                            window.location.reload();
+                        }
+                        break;
+                    }
+                }
+            },30);
+
+            // 控制滑块
+            function dragX(node){
+                node.onmousedown = function(ev){
+                    var e=ev||window.event;
+                    var offsetX = e.clientX - node.offsetLeft;
+
+                    document.onmousemove = function(ev){
+                        var e = ev|| window.event;
+                        var l = e.clientX - offsetX;
+                        // 闲置出界
+                        if(l<=0){l=0}
+                        if(l>=500){l=500}
+                        node.style.left = l +'px';
+                    }
+                }
+
+                document.onmouseup = function(){
+                    document.onmousemove = null;
+                }
+            }
+
+            // 创建砖块
+            function createBrick(n){
+                var brick = document.querySelector("#brick");
+                var bricks = document.getElementsByTagName("div");
+                for(i=0;i<n;i++){
+                    var node = document.createElement("div");
+                    node.style.backgroundColor = randomColor();
+                    brick.appendChild(node);
+                }
+
+                for(var i=0;i<bricks.length;i++){
+                    bricks[i].style.left = bricks[i].offsetLeft + 'px';
+                    bricks[i].style.top = bricks[i].offsetTop + 'px';
+                }
+
+                // 这里的定位必须单独在一个循环里面设置
+                // 否则在上面的循环中设置，会导致浮动清除后，所有
+                // 元素堆叠到一起
+                for(var i=0;i<bricks.length;i++){
+                    bricks[i].style.position = 'absolute';
+                }
+            }
+
+            // 随机颜色
+            function randomColor(){
+                var str = "rgba("+parseInt(Math.random()*256)+","+parseInt(Math.random()*256)+","+parseInt(Math.random()*256)+",.6)";
+                return str;
+            }
+
+            // 碰撞检测
+            function konck(node1,node2){
+            var l1 = node1.offsetLeft;
+            var r1 = node1.offsetLeft + node1.offsetWidth;
+            var t1 = node1.offsetTop;
+            var b1 = node1.offsetTop + node1.offsetHeight;
+
+            var l2 = node2.offsetLeft;
+            var r2 = node2.offsetLeft + node2.offsetWidth;
+            var t2 = node2.offsetTop;
+            var b2 = node2.offsetTop + node2.offsetHeight;
+
+            if(l2>r1 || r2<l1 || t2>b1 || b2<t1){
+                return false;
+            }else{
+                return true;
+            }
+        }
+        }
+    </script>
+</body>
+</html>
