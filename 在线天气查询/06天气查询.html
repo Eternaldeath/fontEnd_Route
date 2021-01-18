@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>在线天气查询</title>
+    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="./bootstrap.min.css">
+    <link rel="stylesheet" href="./buttons.css">
+    <style>
+        .container{margin: 30px auto;}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h2>天气查询</h2>
+                <span id="info"></span>
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label for="city">城市名称：</label>
+                    <input id="city" type="text" class="form-control">
+                </div>
+                <br/>
+                <button id="search" class="button button-3d button-action button-pill">查询</button>
+            </div>
+            <div class="panel-footer">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>日期</th>
+                            <th>天气</th>
+                            <th>风向</th>
+                            <th>气温</th>
+                        </tr>
+                    </thead>
+                    <tbody id="t1"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function download(data){
+            var t1 = document.querySelector("#t1");
+            var info = document.querySelector("#info");
+            var arr = data.weather;
+            var city_value = document.querySelector("#city").value;
+            if(city_value != data.city){
+                alert("未能查到该城市，默认返回北京天气情况");
+            }
+            var str = ``;
+            for(var i=0;i<arr.length;i++){
+                str+= `
+                        <tr>
+                            <th>${arr[i].date}</th>
+                            <th>${arr[i].weather}</th>
+                            <th>${arr[i].wind}</th>
+                            <th>${arr[i].temp}</th>
+                        </tr>
+                `
+            }
+            console.log(data);
+            t1.innerHTML = str;
+            info.innerHTML = `城市: ${data.city},当前日期: ${data.date}`;
+        }
+    </script>
+    <script>
+        window.onload = function(){
+            var btnSear = document.querySelector("#search");
+            var city = document.querySelector("#city");
+            btnSear.onclick = function(){
+                if(!city.value){
+                    alert("请输入城市名字!");
+                }else{
+                    var script = document.createElement("script");
+                    script.src = `https://query.asilu.com/weather/baidu/?city=${city.value}&callback=download`;
+                    document.body.appendChild(script);
+                }
+
+            }
+        }
+    </script>
+</body>
+</html>
