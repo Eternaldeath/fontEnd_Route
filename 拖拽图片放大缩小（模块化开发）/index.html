@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>模块化实现图片拖拽放大</title>
+    <style>
+        *{margin: 0; padding: 0;}
+        #div1{width: 200px; height: 200px; background-color: red; position: relative;}
+        #div2{width: 10px; height: 10px; background-color: blue; position: absolute; right: 0;bottom: 0;}
+        #div1 img{width: 100%;height: 100%;}
+    </style>
+</head>
+<body>
+    <div id="div1">
+        <img src="avatar.jpeg" alt="">
+        <div id="div2"></div>
+    </div>
+
+    <script src="js/require.js" async defer data-main="js/main"></script>
+</body>
+</html>
