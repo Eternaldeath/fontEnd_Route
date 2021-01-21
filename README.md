@@ -39,6 +39,8 @@
 
 [正则表单验证](https://eternaldeath.github.io/fontEnd_Route/正则表单验证/07注册表单验证_正则.html)
 
+[轮播图_jq](https://eternaldeath.github.io/fontEnd_Route/轮播图_jq/banner.html)
+
 #### 仿站
 [博文尚美首页仿站](https://eternaldeath.github.io/fontEnd_Route/wholePage/index.html)
 

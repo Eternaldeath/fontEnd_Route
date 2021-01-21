@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>轮播图</title>
+    <style>
+        *{margin: 0;padding: 0;}
+        li{list-style: none;}
+        img{border: none;}
+
+        body{background: #ecfaff;}
+
+        .play{width: 470px; height: 150px; overflow: hidden; position: relative; margin: 150px auto 0;}
+        ol{position: absolute; right: 5px; bottom: 5px; z-index: 2;}
+        ol li{float: left; margin-right: 3px; display: inline; cursor: pointer; background: #fcf2cf;border: 1px solid #f47508;padding:  3px 5px;}
+        .active{padding: 3px 5px; font-weight: bold; color: #ffffff; background: #ffb442; position: relative; bottom: 2px;}
+
+        ul{position: absolute; top: 0; left: 0; z-index: 1;}
+        ul li{width: 470px; height: 150px; float: left;}
+        ul img{float: left; width: 470px; height: 150px;}
+    </style>
+</head>
+<body>
+    <div class="play" id="play">
+        <ol>
+            <li class="active">1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+        </ol>
+        <ul>
+            <li><a href="#"><img src="./img/ad1.png" alt=""></a></li>
+            <li><a href="#"><img src="./img/ad2.jfif" alt=""></a></li>
+            <li><a href="#"><img src="./img/ad3.jpg" alt=""></a></li>
+            <li><a href="#"><img src="./img/ad4.jpg" alt=""></a></li>
+            <li><a href="#"><img src="./img/ad5.jpg" alt=""></a></li>
+            <li><a href="#"><img src="./img/ad1.png" alt=""></a></li>
+        </ul>
+    </div>
+
+    <script src="./jquery-3.4.1.min.js"></script>
+    <script>
+        $(function(){
+            var aBtns = $("#play ol li");
+            var oUl = $("#play ul");
+            var aLis = oUl.find("li");
+
+            // 设置点击事件
+            // 点击事件的顺序框样式
+            var iNow = 0; // 显示当前下标
+            var timer = 0; // 定时器
+            aBtns.click(function(){
+                iNow = $(this).index();
+                tab();
+            })
+
+            $("#play").mouseenter(function(){
+                 clearInterval(timer);
+            }).mouseleave(function(){
+                    timer = setInterval(function(){
+                    iNow++;
+                    tab();
+                },2000);
+            })
+
+            timer = setInterval(function(){
+                iNow++;
+                tab();
+            },2000);
+
+            function tab(){
+                aBtns.attr("class",'').eq(iNow).attr("class",'active');
+                if(iNow == aBtns.length){
+                    aBtns.eq(0).attr("class",'active');
+                }
+
+                oUl.animate({
+                    top:-150 * iNow
+                },500,function(){
+                    // 判断是否是最后一张图片
+                    if(iNow == aBtns.length){
+                        iNow=0;
+                        oUl.css("top",0);
+                    }
+                })
+            }
+        })
+    </script>
+</body>
+</html>
