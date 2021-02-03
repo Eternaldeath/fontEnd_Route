@@ -1,61 +1,84 @@
 <template>
-    <div class="movie_body">
-				<ul>
-					<!-- 
-					<li>
-						<div class="pic_show"><img src="/images/movie_2.jpg"></div>
-						<div class="info_list">
-							<h2>毒液：致命守护者</h2>
-							<p>观众评 <span class="grade">9.3</span></p>
-							<p>主演: 汤姆·哈迪,米歇尔·威廉姆斯,里兹·阿迈德</p>
-							<p>今天56家影院放映443场</p>
-						</div>
-						<div class="btn_mall">
-							购票
-						</div>
-					</li> -->
-					<li v-for="item in movieList" :key="item.id">
-						<div class="pic_show"><img :src="item.img"></div>
-						<div class="info_list">
-							<h2>{{item.nm}}</h2>
-							<p class="version_info">
-								<img src="@/assets/3D.png" alt="" v-if="item.ver.td">
-								<img src="@/assets/max.png" alt="" v-if="item.ver.max">
-							</p>
-							<p>观众评 <span class="grade">{{item.sc}}</span></p>
-							<p>主演: {{item.star}}</p>
-							<p>上映时间:{{item.rt}}</p>
-						</div>
-						<div class="btn_mall">
-							购票
-						</div>
-					</li>
-				</ul>
-			</div>
+    <div class="movie_body" ref="movie_body" id="movie_body">
+		<Loading v-if="isLoading"/>
+		<ul v-else>
+			<li v-for="item in movieList" :key="item.id" @tap="handleToDetail">
+				<div class="pic_show"><img v-lazy.movie_body="item.img"></div>
+				<div class="info_list">
+					<h2>{{item.nm}}</h2>
+					<p class="version_info">
+						<img src="@/assets/3D.png" alt="" v-if="item.ver.td">
+						<img src="@/assets/max.png" alt="" v-if="item.ver.max">
+					</p>
+					<p>观众评 <span class="grade">{{item.sc}}</span></p>
+					<p>主演: {{item.star}}</p>
+					<p>上映时间:{{item.rt}}</p>
+				</div>
+				<div class="btn_mall">
+					购票
+				</div>
+			</li>
+			<!-- <li class="loadMore" style=" border: none;">{{pullDowning}}</li> -->
+		</ul>
+	</div>
 </template>
 
 <script>
+import BScroll from 'better-scroll';
+
 export default {
 	name:'NowPlaying',
 	data(){
 		return {
 			movieList:[],
+			isLoading: true,
+			// pullDownMsg:'',
+			// 请求数据偏移
+			offset: 0,
+			scroll:null,
 		}
 	},
 	mounted(){
 	this.axios.get("https://www.softeem.xin/maoyanApi/ajax/movieOnInfoList").then((res)=>{
 		var msg = res.data.movieList;
-		console.log(msg);
+		// console.log(msg);
 		if(msg !== null){
 			for(var i=0;i<msg.length;i++){
 				msg[i].img = this.toGetMovieImg(msg[i].img);
 				msg[i].ver = this.toGetVersion(msg[i].version);
 			}
 			this.movieList = msg;
+			this.isLoading = false;
+			this.$nextTick(()=>{
+				this.scroll = new BScroll(".movie_body");
+			});
+
+			// this.scroll.on('scroll',(pos)=>{
+			// 	if(pos.y<0){
+			// 		console.log(pos.y);
+			// 		this.offset += 10;
+			// 		this.pullDowning = '加载更多...';
+			// 		this.axios.get(`/ajax/cinemaList?day=${time}&cityId=1&updateShowDay=true&limit=10&offset=${this.offset}`).then((res)=>{
+			// 			console.log(this.offset);
+			// 			this.cinemaList = [...this.cinemaList,...res.data.cinemas];
+			// 			// console.log(res.data.cinemas);
+			// 			// this.cinemaList = res.data.cinemas;
+			// 			this.pullDowning = '';
+			// 		}
+			// 	)}
+			// });
 		}else{
 			console.log("获取失败！");
 		}
 	});
+	},
+	updated()
+	{ 
+		if(this.scroll)
+		{
+			// this.scroll.finishPullUp();
+			this.scroll.refresh();
+		}
 	},
 	methods:{
 		toGetMovieImg(picUrl){
@@ -65,15 +88,18 @@ export default {
 		},
 		toGetVersion(ver){
 			var verArr = ver.split(' ');
-			console.log(verArr);
+			// console.log(verArr);
 			var vers = {
 				td:false,
 				max:false
 			};
 			if(verArr[0]=='v3d')vers.td=true;
 			if(verArr[1]=='imax')vers.max=true;
-			console.log(vers);
+			// console.log(vers);
 			return vers;
+		},
+		handleToDetail(){
+			console.log("触发tap");
 		}
 	},
 	filters:{
@@ -96,6 +122,11 @@ export default {
     .movie_body .info_list img{ width:20px; float: left;}
     .movie_body .btn_mall , .movie_body .btn_pre{ width:47px; height:27px; line-height: 28px; text-align: center; background-color: #f03d37; color: #fff; border-radius: 4px; font-size: 12px; cursor: pointer;}
     .movie_body .btn_pre{ background-color: #3c9fe6;}
+    .movie_body .pullDown{margin: 0; padding: 0; border: none; text-align: center;font-size: 12px;color: #666;}
+	// 设置懒加载样式
+	img[lazy=loading] {width:20px; float: left;}
 
 	// position: absolute; right:10px; top: 5px;
+	// 自定义
+	.loadMore{text-align: center; font-size: 13px; color: #313538;}
 </style>

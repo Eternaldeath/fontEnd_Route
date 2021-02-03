@@ -1,5 +1,6 @@
 <template>
     		<div class="city_body">
+				<Loading v-if="isLoading"/>
 				<!-- <div class="city_list">
 					<div class="city_sort">
 						<div v-for="item in cityList.firstLetter" :key="item.index">
@@ -19,7 +20,7 @@
 						<li>E</li>
 					</ul>
 				</div> -->
-				<mt-index-list>
+				<mt-index-list v-else class="inner_body">
 					<mt-index-section  v-for="item in cityList.firstLetter" :key="item.index" :index="item.index">
 						<mt-cell  v-for="itemList in item.list" :key="itemList.id" :title="itemList.nm"></mt-cell>
 					</mt-index-section>
@@ -30,7 +31,8 @@
 
 <script>
 import { IndexList, IndexSection } from 'mint-ui';
-import Vue from 'vue'
+import Vue from 'vue';
+import BScroll from 'better-scroll'
 
 Vue.component(IndexList.name, IndexList);
 Vue.component(IndexSection.name, IndexSection);
@@ -41,24 +43,31 @@ export default {
 		return {
 			cityList:['1','222','333'],
 			test:["1","2"],
+			isLoading:true,
 		}
 	},
 	mounted(){
-		this.axios.get('https://www.softeem.xin/maoyanApi/dianying/cities.json').then((res)=>{
+		var cityL = window.localStorage.getItem('cityList');
+
+		if(cityL){
+			this.cityList = JSON.parse(cityL);
+			this.isLoading = false;
+		}else{
+			this.axios.get('https://www.softeem.xin/maoyanApi/dianying/cities.json').then((res)=>{
 			var msg = null;
-			// console.log(res.data.cts);
 			if(res !== null){
 				var cities = res.data.cts;
 				// console.log(cities);
 				// 对城市进行首字母排序
 				this.cityList = this.formatCityList(cities);
-				console.log(this.formatCityList(cities));
-				console.log(this.cityList);
+				this.isLoading = false;
+				window.localStorage.setItem('cityList',JSON.stringify(this.cityList));
 			}else{
 				msg = "获取城市列表失败!";
 				console.log(msg);
 			}
 		});
+		}
 	},
 	methods:{
 		formatCityList(cities){

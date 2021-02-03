@@ -3,27 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Document</title>
 </head>
 <body>
-    <div id="box">
-        <div  v-for="item in listL" :key="item.index">
-            {{item.index}}
-            <!-- 关键在于 v-for 的嵌套中，下一层嵌套中的 in 的对象，需要是外层嵌套中遍历的对象 -->
-            <!-- 比如，此处，内层的 itemList 就是在 item 中进行遍历的，而 item 恰是外层嵌套的对象 item -->
-            <!-- 嵌套循环中，内层循环用 itemList in listL.list 是不行的 -->
-            <span v-for="itemList in item.list" :key="itemList.id">{{itemList.nm}}</span>
+    <div class="wrapper">
+        <div id="box">
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
+            <div>111</div>
         </div>
     </div>
 
+
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
     <script>
+        import bs from 'better-scroll';
+
         var vm = new Vue({
             el:"#box",
             data:{
                 listL:[{'index':'A','list':[{'nm':'aaa','id':'1'}]},{'index':'B','list':[{'nm':'bbb','id':'2'}]},{'index':'C','list':[{'nm':'ccc','id':'3'}]}]
             }
         })
+
+        new bs('.wrapper');
     </script>
 </body>
 </html>

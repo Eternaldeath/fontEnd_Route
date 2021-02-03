@@ -1,37 +1,43 @@
 <template>
 			<div class="movie_body">
-				<ul>
-					<li v-for="item in movieList" :key="item.id">
-						<div class="pic_show"><img :src="item.img"></div>
-						<div class="info_list">
-							<h2>{{item.nm}}</h2>
-							<p class="version_info">
-								<img src="@/assets/3D.png" alt="" v-if="item.ver.td">
-								<img src="@/assets/max.png" alt="" v-if="item.ver.max">
-							</p>
-							<p><span class="person">{{item.wish}}</span> 人想看</p>
-							<p>主演: {{item.star}}</p>
-							<p>{{item.comingTitle}}上映</p>
-						</div>
-						<div class="btn_pre">
-							预售
-						</div>
-					</li>
-				</ul>
+				<!-- <Scroller> -->
+					<Loading v-if="isLoading"/>
+					<ul v-else>
+						<li v-for="item in movieList" :key="item.id" @tap="handleToDetail">
+							<div class="pic_show"><img :src="item.img"></div>
+							<div class="info_list">
+								<h2>{{item.nm}}</h2>
+								<p class="version_info">
+									<img src="@/assets/3D.png" alt="" v-if="item.ver.td">
+									<img src="@/assets/max.png" alt="" v-if="item.ver.max">
+								</p>
+								<p><span class="person">{{item.wish}}</span> 人想看</p>
+								<p>主演: {{item.star}}</p>
+								<p>{{item.comingTitle}}上映</p>
+							</div>
+							<div class="btn_pre">
+								预售
+							</div>
+						</li>
+					</ul>
+				<!-- </Scroller> -->
 			</div>
 </template>
 
 <script>
+import BScroll from 'better-scroll';
 export default {
 	name:'ComingSoon',
 	data(){
 		return {
 			movieList:[],
+			isLoading:true,
 		}
 	},
 	mounted(){
 		// https://www.softeem.xin/maoyanApi/ajax/comingList?ci=57&token=&limit=10
 		// /ajax/comingList?ci=1&token=limit=10
+
 		this.axios.get("/ajax/comingList?ci=1&token=&limit=10").then((res)=>{
 			var msg = res.data.coming;
 			// console.log(res,msg);
@@ -41,30 +47,37 @@ export default {
 				msg[i].ver = this.toGetVersion(msg[i].version);
 			}
 			this.movieList = msg;
-			console.log(this.movieList);
+			this.isLoading = false;
+			this.$nextTick(()=>{
+				new BScroll(".movie_body");
+			})
+			// console.log(this.movieList);
 		}else{
 			console.log("获取失败！");
 		}
 		})
 	},
 		methods:{
-		toGetMovieImg(picUrl){
-			// console.log(picUrl);
-			var newUrl = picUrl.replace('w.h/','');
-			return newUrl;
-		},
-		toGetVersion(ver){
-			var verArr = ver.split(' ');
-			console.log(verArr);
-			var vers = {
-				td:false,
-				max:false
-			};
-			if(verArr[0]=='v3d')vers.td=true;
-			if(verArr[1]=='imax')vers.max=true;
-			console.log(vers);
-			return vers;
-		}
+			toGetMovieImg(picUrl){
+				// console.log(picUrl);
+				var newUrl = picUrl.replace('w.h/','');
+				return newUrl;
+			},
+			toGetVersion(ver){
+				var verArr = ver.split(' ');
+				// console.log(verArr);
+				var vers = {
+					td:false,
+					max:false
+				};
+				if(verArr[0]=='v3d')vers.td=true;
+				if(verArr[1]=='imax')vers.max=true;
+				// console.log(vers);
+				return vers;
+			},
+			handleToDetail(){
+				console.log("触发tap");
+			}
 	},
 }
 </script>
