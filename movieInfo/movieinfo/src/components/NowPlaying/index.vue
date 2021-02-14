@@ -36,16 +36,23 @@ export default {
 			// 请求数据偏移
 			offset: 0,
 			scroll:null,
+			preCityId:-1,
 		}
 	},
-	mounted(){
-	this.axios.get("https://www.softeem.xin/maoyanApi/ajax/movieOnInfoList").then((res)=>{
+	// activeted 用于存在 keep live 时激活
+	activated(){
+		var cityId = this.$store.state.city.id;
+		// 如果当前城市和之前切换的城市一样，就不再请求，保留 keep-live 的缓存机制
+		if(this.preCityId === cityId){return ;}
+		this.isLoading = true;
+	this.axios.get("https://www.softeem.xin/maoyanApi/ajax/movieOnInfoList?cityId="+cityId).then((res)=>{
 		var msg = res.data.movieList;
 		// console.log(msg);
 		if(msg !== null){
 			for(var i=0;i<msg.length;i++){
 				msg[i].img = this.toGetMovieImg(msg[i].img);
 				msg[i].ver = this.toGetVersion(msg[i].version);
+				this.preCityId = cityId;
 			}
 			this.movieList = msg;
 			this.isLoading = false;

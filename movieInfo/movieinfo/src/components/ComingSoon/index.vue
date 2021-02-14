@@ -32,13 +32,17 @@ export default {
 		return {
 			movieList:[],
 			isLoading:true,
+			preCityId:-1,
 		}
 	},
-	mounted(){
+	activated(){
 		// https://www.softeem.xin/maoyanApi/ajax/comingList?ci=57&token=&limit=10
 		// /ajax/comingList?ci=1&token=limit=10
-
-		this.axios.get("/ajax/comingList?ci=1&token=&limit=10").then((res)=>{
+		var cityId = this.$store.state.city.id;
+		// 如果当前城市和之前切换的城市一样，就不再请求，保留 keep-live 的缓存机制
+		if(this.preCityId === cityId){return ;}
+		this.isLoading = true;
+		this.axios.get(`/ajax/comingList?ci=${cityId}&token=&limit=10`).then((res)=>{
 			var msg = res.data.coming;
 			// console.log(res,msg);
 			if(msg !== null){
@@ -48,6 +52,7 @@ export default {
 			}
 			this.movieList = msg;
 			this.isLoading = false;
+			this.preCityId = cityId;
 			this.$nextTick(()=>{
 				new BScroll(".movie_body");
 			})

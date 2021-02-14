@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>技能图生成器</title>
+    <style>
+        canvas {border: 1px solid black;}
+        div{margin: 0 auto;}
+    </style>
+</head>
+
+<body>
+    <div>
+        <canvas id="canvas" width="400" height="400"></canvas>
+    </div>
+
+
+    <script>
+        window.onload = function () {
+            // 检查浏览器是否支持 canvas
+            if (canvas.getContext) {
+                draw(6) //在300,100处画一个半径为40的六边形
+            } else {
+                alert("您的浏览器不支持 canvas");
+            }
+        }
+
+        function draw(n) {
+            /** @type {HTMLCanvasElement} */
+            var canvas = document.getElementById("canvas");
+            var ctx = canvas.getContext("2d");
+            var ang;
+            var offset = 0;
+
+            ang = Math.PI * 2 / n;
+            ctx.fillStyle = '#E8E8E8';
+            ctx.strokeStyle = 'black';
+            ctx.lineWidth = 1;
+            // 绘制三层
+            for (var i = 0; i < 3; i++) {
+                ctx.save();
+                ctx.translate(200, 200); //原点移到x,y处，即要画的多边形中心
+                ctx.beginPath();
+                ctx.moveTo(0, 0); //据中心r距离处画点
+                ctx.lineTo(0, -100+i*30); //据中心r距离处画点
+                for (var j = 0; j < n; j++) {
+                    ctx.rotate(ang) //旋转
+                    ctx.lineTo(0, -100+i*30); //据中心r距离处连线
+                    ctx.lineTo(0,0);
+                    ctx.lineTo(0, -100+i*30);
+                    ctx.fill();
+                }
+                // fill 如果后填充，会覆盖本来的黑色线条
+                ctx.closePath();
+                ctx.stroke();
+                ctx.restore();
+            }
+
+        }
+    </script>
+</body>
+
+</html>

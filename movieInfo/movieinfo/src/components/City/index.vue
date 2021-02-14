@@ -1,28 +1,9 @@
 <template>
     		<div class="city_body">
 				<Loading v-if="isLoading"/>
-				<!-- <div class="city_list">
-					<div class="city_sort">
-						<div v-for="item in cityList.firstLetter" :key="item.index">
-							<h2>{{item.index}}</h2>
-							<ul>
-								<li v-for="itemList in item.list" :key="itemList.id">{{itemList.nm}}</li>
-							</ul>
-						</div>
-					</div>
-				</div>
-				<div class="city_index">
-					<ul>
-						<li>A</li>
-						<li>B</li>
-						<li>C</li>
-						<li>D</li>
-						<li>E</li>
-					</ul>
-				</div> -->
 				<mt-index-list v-else class="inner_body">
 					<mt-index-section  v-for="item in cityList.firstLetter" :key="item.index" :index="item.index">
-						<mt-cell  v-for="itemList in item.list" :key="itemList.id" :title="itemList.nm"></mt-cell>
+						<mt-cell  v-for="itemList in item.list" :key="itemList.id" :title="itemList.nm" @click.native='handleToCity(itemList.nm,itemList.id)'></mt-cell>
 					</mt-index-section>
 				</mt-index-list>
 			</div>
@@ -50,6 +31,7 @@ export default {
 		var cityL = window.localStorage.getItem('cityList');
 
 		if(cityL){
+			// console.log(cityL);
 			this.cityList = JSON.parse(cityL);
 			this.isLoading = false;
 		}else{
@@ -57,7 +39,7 @@ export default {
 			var msg = null;
 			if(res !== null){
 				var cities = res.data.cts;
-				// console.log(cities);
+				console.log(cities);
 				// 对城市进行首字母排序
 				this.cityList = this.formatCityList(cities);
 				this.isLoading = false;
@@ -111,6 +93,16 @@ export default {
 				firstLetter,
 			};
 		},
+		handleToCity(nm,id){
+			// console.log("111");
+			this.$store.commit("city/CITY_INFO",{nm,id});
+			// 编程式路由
+			this.$router.push("/movie/nowPlaying");
+			// 将当前的城市记录到本地存储中
+			window.localStorage.setItem('nowNm',nm);
+			window.localStorage.setItem('nowId',id);
+
+		}
 	}
 }
 </script>

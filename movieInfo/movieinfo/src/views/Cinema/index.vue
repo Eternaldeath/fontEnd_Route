@@ -2,8 +2,8 @@
     <div id="main">
         <Header title="影院信息"></Header>
         <div id="content">
-			<div class="cinema_menu">
-				<div class="city_switch">
+			<!-- <div class="cinema_menu"> -->
+				<!-- <div class="city_switch">
 					全城 <i class="iconfont icon-lower-triangle"></i>
 				</div>
 				<div class="brand_swtich">
@@ -12,7 +12,7 @@
 				<div class="feature_switch">
 					特色 <i class="iconfont icon-lower-triangle"></i>
 				</div>
-			</div>
+			</div> -->
             <CList></CList>
         </div>
         <Tabbar></Tabbar>

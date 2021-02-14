@@ -35,18 +35,24 @@ export default {
 			// 请求数据偏移
 			offset: 0,
 			scroll:null,
+			preCityId:-1,
 			// loading: tru,
 		}
 	},
 	mounted(){
+		var cityId = this.$store.state.city.id;
+		// 如果当前城市和之前切换的城市一样，就不再请求，保留 keep-live 的缓存机制
+		if(this.preCityId === cityId){return ;}
+		this.isLoading = true;
 		var myDate = new Date();
 		var offset = 20;
 		// 将1970/08/08转化成1970-08-08
 		var time = myDate.toLocaleDateString().split('/').join('-');
-		this.axios.get(`/ajax/cinemaList?day=${time}&cityId=1&updateShowDay=true&limit=10`).then((res)=>{
+		this.axios.get(`/ajax/cinemaList?day=${time}&cityId=${cityId}&updateShowDay=true&limit=10`).then((res)=>{
 			// console.log(res.data.cinemas);
 			this.cinemaList = res.data.cinemas;
 			this.isLoading = false;
+			this.preCityId = cityId;
 			this.$nextTick(()=>{
 				this.scroll = new BScroll(".cinema_body",{
 					tap:'tap',
@@ -58,7 +64,7 @@ export default {
 						console.log(pos.y);
 						this.offset += 10;
 						this.pullDowning = '加载更多...';
-						this.axios.get(`/ajax/cinemaList?day=${time}&cityId=1&updateShowDay=true&limit=10&offset=${this.offset}`).then((res)=>{
+						this.axios.get(`/ajax/cinemaList?day=${time}&cityId=${cityId}&updateShowDay=true&limit=10&offset=${this.offset}`).then((res)=>{
 							console.log(this.offset);
 							this.cinemaList = [...this.cinemaList,...res.data.cinemas];
 							// console.log(res.data.cinemas);

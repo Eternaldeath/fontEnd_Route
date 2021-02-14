@@ -187,7 +187,7 @@
                     newLi.children[1].children[1].removeAttribute("disabled");
                     // 增加节点
                     // ulList.appendChild(newLi);
-                    ulList.insertBefore(newLi,target.parentNode.parentNode);
+                    ulList.insertBefore(newLi,target.parentNode.parentNode.nextSibling);
 
                 }else if(target.innerHTML == '删除'){
                         var prompt = document.querySelector("#prompt");

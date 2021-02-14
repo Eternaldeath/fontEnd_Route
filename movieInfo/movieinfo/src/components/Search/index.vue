@@ -38,8 +38,9 @@ export default {
 			// 该方法通过名字相同自动关联上面的 message 字段
 			// 并且获得 message 字段获取的输入内容
 			var that = this;
+			var cityId = this.$store.state.city.id;
 			this.cancelRequest();
-			this.axios.get(`/ajax/search?kw=${newVal}&cityId=1&stype=-1`,{             
+			this.axios.get(`/ajax/search?kw=${newVal}&cityId=${cityId}&stype=-1`,{             
                 cancelToken: new this.axios.CancelToken(function(c) {
                     that.source = c;
                 })

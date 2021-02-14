@@ -13,6 +13,6 @@ export default new Vuex.Store({
   },
   // 注册
   modules: {
-    city
+    city,
   }
 })
