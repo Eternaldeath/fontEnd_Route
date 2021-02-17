@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>本地记事本</title>
+    <style>
+        *{margin: 0;padding: 0;}
+        .container{width: 80%;margin: 0 auto; margin-top: 20px;}
+
+        .inputMsg{display: flex; flex-direction: row;height: 200px;margin-bottom: 20px;}
+        .inputMsg .avator{width: 20%;height: 100%;display: flex; justify-content: center;}
+        .inputMsg .avator img{width: 30px; height: 30px;}
+        .inputMsg .inputBox{width: 80%;}
+        .inputMsg .inputBox textarea{width: 80%;height: 160px; resize: none;font-size: 20px;outline: black; outline-width: thick;padding-top: 5px; padding-left: 5px;}
+        .inputMsg .inputBox input{display: block; background-color: #f6f6f6;border-radius: 8px; font-weight:bold; width: 50px; height: 25px;outline: none;}
+        .inputMsg .inputBox input:hover{background: black; color: white;}
+
+        .showMsg{display: flex; flex-direction: row;border-top: 1px solid gray;padding-top: 15px;}
+        .showMsg .avator{width: 20%;height: 100%;display: flex; justify-content: center;}
+        .showMsg .avator img{width: 30px; height: 30px;}
+        .showMsg .showInfo{width: 80%;}
+        .showMsg .showInfo .showMainInfo{width: 80%;height: 160px;font-size: 20px;margin-top: 10px;}
+        .showMsg .showInfo .showDetail .name{color: #222222; font-weight: bold;font-family: Helvetica;}
+        .showMsg .showInfo .showDetail .time{color: #666666; font-size: 12px;font-family: Helvetica;}
+    </style>
+</head>
+<body>
+    <div class="container" id="container">
+        <div class="inputMsg">
+            <div class="avator"><img src="./me.png" alt=""></div>
+            <div class="inputBox">
+                <textarea name="" id="textarea" required placeholder="最多输入 140 个字"></textarea>
+                <input type="submit" onclick="saveData()">
+            </div>
+        </div>
+        <div class="showMsg" id="showMsg">
+            <div class="avator"><img src="./boy.png" alt=""></div>
+            <div class="showInfo">
+                <div class="showDetail">
+                    <span class="name">我的</span>
+                    <span class="time">时间</span>
+                </div>
+                <div class="showMainInfo">暂无内容</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var datatable = null;
+        var db = openDatabase('mydata','','test db',2*1024*1024);
+        
+        window.onload = function(){
+            init();
+        }
+
+        // 初始化，页面加载完毕就往里面装载数据
+        function init(){
+            showAllData();
+        }
+
+        // 在调用 showAllData 前条用该函数，以便擦除数据，重新加载
+        function removeAllData(){
+
+        }
+
+        // 显示数据，这是每次添加时调用
+        function showData(rows){
+            console.log(rows);
+            var showMsg = document.getElementById("showMsg");
+            var container = document.getElementById("container");
+            var templete = showMsg.cloneNode(true);
+            // templete.lastChild.firstChild.lastChild.textContent = rows
+
+            container.appendChild(templete);
+
+        }
+
+        // 显示全部数据，从数据库中取出所有数据
+        function showAllData(){
+            db.transaction(function(tx){
+                tx.executeSql("create table if not exists MsgData(name TEXT,message TEXT,time INTEGER)",[]);
+                tx.executeSql("select * from MsgData",[],function(tx,rs){
+                    for(var i=0;i<rs.rows.length;i++){
+                        showData(rs.rows[index]);
+                    }
+                })
+            })
+        }
+
+        // 追加数据，往数据库里面添加数据
+        function addData(name,messagem,time){
+            db.transaction(function(tx){
+                tx.executeSql("insert into MsgData values(?,?,?)",["我的",message,time],function(tx,rs){
+                    alert("保存成功！");
+                }),
+                function(tx,rs){
+                    alert("保存失败！");
+                }
+            })
+        }
+
+        // 记录当前输入
+        function saveData(){
+            var name = null;
+            var memo = document.getElementById("textarea").value;
+            var time = new Date();
+            addData(name,memo,time);
+            showAddData(name,memo,time);
+            memo.value = "";
+        }
+
+        // 将提交的数据展示在页面上
+        function showAddData(name,memo,time){
+            var showMsg = document.getElementById("showMsg");
+            var container = document.getElementById("container");
+            var templete = showMsg.cloneNode(true);
+            templete.lastChild.lastChild.innerHTML = memo;
+            templete.lastChild.firstChild.lastChild.innerHTML = time;
+            templete.lastChild.firstChild.firstChild.innerHTML = "我的";
+        }
+    </script>
+</body>
+</html>

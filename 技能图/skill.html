@@ -6,8 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>技能图生成器</title>
     <style>
-        canvas {border: 1px solid black;}
-        div{margin: 0 auto;}
+        canvas {
+            border: 1px solid black;
+        }
+
+        div {
+            margin: 0 auto;
+        }
     </style>
 </head>
 
@@ -32,7 +37,6 @@
             var canvas = document.getElementById("canvas");
             var ctx = canvas.getContext("2d");
             var ang;
-            var offset = 0;
 
             ang = Math.PI * 2 / n;
             ctx.fillStyle = '#E8E8E8';
@@ -44,12 +48,19 @@
                 ctx.translate(200, 200); //原点移到x,y处，即要画的多边形中心
                 ctx.beginPath();
                 ctx.moveTo(0, 0); //据中心r距离处画点
-                ctx.lineTo(0, -100+i*30); //据中心r距离处画点
+                ctx.lineTo(0, -100 + i * 30); //据中心r距离处画点
                 for (var j = 0; j < n; j++) {
+                    if(i==0){
+                        ctx.save();
+                        ctx.translate(0,-100);
+                        ctx.rotate(-ang);
+                        ctx.strokeText("hahah",-15,-110 + i * 30);
+                        ctx.restore();
+                    }
                     ctx.rotate(ang) //旋转
-                    ctx.lineTo(0, -100+i*30); //据中心r距离处连线
-                    ctx.lineTo(0,0);
-                    ctx.lineTo(0, -100+i*30);
+                    ctx.lineTo(0, -100 + i * 30); //据中心r距离处连线
+                    ctx.lineTo(0, 0);
+                    ctx.lineTo(0, -100 + i * 30);
                     ctx.fill();
                 }
                 // fill 如果后填充，会覆盖本来的黑色线条
@@ -57,6 +68,20 @@
                 ctx.stroke();
                 ctx.restore();
             }
+
+            // 绘制技能
+            ctx.save();
+            ctx.fillStyle = "rgba(135, 206, 250, 0.2)";
+            ctx.translate(200, 200); //原点移到x,y处，即要画的多边形中心
+            ctx.beginPath();
+            ctx.moveTo(0, -80); //据中心r距离处画点
+            for (var i = 0; i < n; i++) {
+                ctx.rotate(ang) //旋转
+                ctx.lineTo(0, -80); //据中心r距离处连线
+                ctx.fill();
+            }
+            ctx.closePath();
+            ctx.restore();
 
         }
     </script>

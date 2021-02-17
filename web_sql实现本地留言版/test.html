@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        html,body{height: 300px;}
+        .div1{width: 400px; height: 300px; border: 1px solid black;justify-content: center;}
+        .div2{width: 50%; height: 50%; border: 1px solid blue;justify-content: center;}
+    </style>
+</head>
+<body>
+    <div class="div1" id="div1">
+        <div class="div2"></div>
+        <div class="div2"></div>
+        <div class="div2"></div>
+        <div class="div2"></div>
+        <div class="div2"></div>
+    </div>
+
+    <script>
+        var div1 = document.getElementById("div1");
+        var div2 = document.getElementsByClassName("div2");
+        // var by = document.getElementsByTagName("body");
+
+        var dupNode = div1.cloneNode(true);
+        dupNode.
+        document.body.appendChild(dupNode);
+        // alert(new Date().getFullYear+new Date().getMonth)
+        console.log(div1.children.length);
+
+        for(var i=2;i<div1.children.length;i++){
+            console.log(i);
+            div1.removeChild(div1.lastChild);
+        }
+
+        // console.log(div1.children.length);
+
+    </script>
+</body>
+</html>
