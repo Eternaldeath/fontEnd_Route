@@ -1,31 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>本地记事本</title>
     <style>
-        *{margin: 0;padding: 0;}
-        .container{width: 80%;margin: 0 auto; margin-top: 20px;}
+        * {
+            margin: 0;
+            padding: 0;
+        }
 
-        .inputMsg{display: flex; flex-direction: row;height: 200px;margin-bottom: 20px;}
-        .inputMsg .avator{width: 20%;height: 100%;display: flex; justify-content: center;}
-        .inputMsg .avator img{width: 30px; height: 30px;}
-        .inputMsg .inputBox{width: 80%;}
-        .inputMsg .inputBox textarea{width: 80%;height: 160px; resize: none;font-size: 20px;outline: black; outline-width: thick;padding-top: 5px; padding-left: 5px;}
-        .inputMsg .inputBox input{display: block; background-color: #f6f6f6;border-radius: 8px; font-weight:bold; width: 50px; height: 25px;outline: none;}
-        .inputMsg .inputBox input:hover{background: black; color: white;}
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            margin-top: 20px;
+        }
 
-        .showMsg{display: flex; flex-direction: row;border-top: 1px solid gray;padding-top: 15px;}
-        .showMsg .avator{width: 20%;height: 100%;display: flex; justify-content: center;}
-        .showMsg .avator img{width: 30px; height: 30px;}
-        .showMsg .showInfo{width: 80%;}
-        .showMsg .showInfo .showMainInfo{width: 80%;height: 160px;font-size: 20px;margin-top: 10px;}
-        .showMsg .showInfo .showDetail .name{color: #222222; font-weight: bold;font-family: Helvetica;}
-        .showMsg .showInfo .showDetail .time{color: #666666; font-size: 12px;font-family: Helvetica;}
+        .inputMsg {
+            display: flex;
+            flex-direction: row;
+            height: 200px;
+            margin-bottom: 20px;
+        }
+
+        .inputMsg .avator {
+            width: 20%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .inputMsg .avator img {
+            width: 30px;
+            height: 30px;
+        }
+
+        .inputMsg .inputBox {
+            width: 80%;
+        }
+
+        .inputMsg .inputBox textarea {
+            width: 80%;
+            height: 160px;
+            resize: none;
+            font-size: 20px;
+            outline: black;
+            outline-width: thick;
+            padding-top: 5px;
+            padding-left: 5px;
+        }
+
+        .inputMsg .inputBox input {
+            display: block;
+            background-color: #f6f6f6;
+            border-radius: 8px;
+            font-weight: bold;
+            width: 50px;
+            height: 25px;
+            outline: none;
+        }
+
+        .inputMsg .inputBox input:hover {
+            background: black;
+            color: white;
+        }
+
+        .showMsg {
+            display: flex;
+            flex-direction: row;
+            border-top: 1px solid gray;
+            padding-top: 15px;
+        }
+
+        .showMsg .avator {
+            width: 20%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .showMsg .avator img {
+            width: 30px;
+            height: 30px;
+        }
+
+        .showMsg .showInfo {
+            width: 80%;
+        }
+
+        .showMsg .showInfo .showMainInfo {
+            width: 80%;
+            height: 160px;
+            font-size: 20px;
+            margin-top: 10px;
+        }
+
+        .showMsg .showInfo .showDetail .name {
+            color: #222222;
+            font-weight: bold;
+            font-family: Helvetica;
+        }
+
+        .showMsg .showInfo .showDetail .time {
+            color: #666666;
+            font-size: 12px;
+            font-family: Helvetica;
+        }
     </style>
 </head>
+
 <body>
     <div class="container" id="container">
         <div class="inputMsg">
@@ -49,24 +134,24 @@
 
     <script>
         var datatable = null;
-        var db = openDatabase('mydata','','test db',2*1024*1024);
-        
-        window.onload = function(){
+        var db = openDatabase('mydata', '', 'test db', 2 * 1024 * 1024);
+
+        window.onload = function () {
             init();
         }
 
         // 初始化，页面加载完毕就往里面装载数据
-        function init(){
+        function init() {
             showAllData();
         }
 
         // 在调用 showAllData 前条用该函数，以便擦除数据，重新加载
-        function removeAllData(){
+        function removeAllData() {
 
         }
 
         // 显示数据，这是每次添加时调用
-        function showData(rows){
+        function showData(rows) {
             console.log(rows);
             var showMsg = document.getElementById("showMsg");
             var container = document.getElementById("container");
@@ -78,48 +163,52 @@
         }
 
         // 显示全部数据，从数据库中取出所有数据
-        function showAllData(){
-            db.transaction(function(tx){
-                tx.executeSql("create table if not exists MsgData(name TEXT,message TEXT,time INTEGER)",[]);
-                tx.executeSql("select * from MsgData",[],function(tx,rs){
-                    for(var i=0;i<rs.rows.length;i++){
-                        showData(rs.rows[index]);
+        function showAllData() {
+            db.transaction(function (tx) {
+                tx.executeSql("create table if not exists MsgData(name TEXT,message TEXT,time INTEGER)", []);
+                tx.executeSql("select * from MsgData", [], function (tx, rs) {
+                    // console.log(rs);
+                    for (var i = 0; i < rs.rows.length; i++) {
+                        showAddData(rs.rows[i].name, rs.rows[i].message, rs.rows[i].time)
                     }
                 })
             })
         }
 
         // 追加数据，往数据库里面添加数据
-        function addData(name,messagem,time){
-            db.transaction(function(tx){
-                tx.executeSql("insert into MsgData values(?,?,?)",["我的",message,time],function(tx,rs){
-                    alert("保存成功！");
-                }),
-                function(tx,rs){
-                    alert("保存失败！");
-                }
+        function addData(name, message, time) {
+            db.transaction(function (tx) {
+                tx.executeSql("insert into MsgData values(?,?,?)", ["我的", message, time], function (tx, rs) {
+                        alert("保存成功！");
+                    }),
+                    function (tx, rs) {
+                        alert("保存失败！");
+                    }
             })
         }
 
         // 记录当前输入
-        function saveData(){
+        function saveData() {
             var name = null;
             var memo = document.getElementById("textarea").value;
             var time = new Date();
-            addData(name,memo,time);
-            showAddData(name,memo,time);
-            memo.value = "";
+            addData(name, memo, time);
+            // showAddData(name,memo,time);
+            document.getElementById("textarea").value = "";
         }
 
         // 将提交的数据展示在页面上
-        function showAddData(name,memo,time){
+        function showAddData(name, memo, time) {
+            console.log("调用成功")
             var showMsg = document.getElementById("showMsg");
             var container = document.getElementById("container");
             var templete = showMsg.cloneNode(true);
-            templete.lastChild.lastChild.innerHTML = memo;
-            templete.lastChild.firstChild.lastChild.innerHTML = time;
-            templete.lastChild.firstChild.firstChild.innerHTML = "我的";
+            console.log(templete.childNodes[3]);
+            // templete.lastChild.lastChild.innerHTML = memo;
+            // templete.lastChild.firstChild.lastChild.innerHTML = time;
+            // templete.lastChild.firstChild.firstChild.innerHTML = "我的";
         }
     </script>
 </body>
+
 </html>
