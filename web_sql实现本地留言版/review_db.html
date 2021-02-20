@@ -80,11 +80,23 @@
             height: 100%;
             display: flex;
             justify-content: center;
+            flex-direction: column;
+            text-align: center;
         }
 
         .showMsg .avator img {
             width: 30px;
             height: 30px;
+            margin: 0 auto;
+        }
+
+        .showMsg .avator p {
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .showMsg .avator p:hover {
+            color: red;
         }
 
         .showMsg .showInfo {
@@ -123,7 +135,10 @@
             </div>
         </div>
         <div class="showMsg" id="showMsg">
-            <div class="avator"><img src="./boy.png" alt=""></div>
+            <div class="avator">
+                <img src="./boy.png" alt="">
+                <p class="del">删除</p>
+            </div>
             <div class="showInfo">
                 <div class="showDetail">
                     <span class="name">我的</span>
@@ -135,20 +150,22 @@
     </div>
 
     <!-- 自定义右键菜单 -->
-    <div id="menu">
+    <!-- <div id="menu">
         <ul>
             <li>删除</li>
         </ul>
-    </div>
+    </div> -->
 
     <script src="./Date_format_tool.js"></script>
-    <script src="./rightClick.js"></script>
+    <!-- <script src="./rightClick.js"></script> -->
     <script>
         var datatable = null;
         var db = openDatabase('mydata', '', 'test db', 2 * 1024 * 1024);
 
         window.onload = function () {
             init();
+            // 监听要被删除的元素
+            del();
         }
 
         // 初始化，页面加载完毕就往里面装载数据
@@ -157,79 +174,100 @@
         }
 
         // 删除数据
-        function(){
-            
-        }
+        function del() {
+            var del = document.querySelector("del");
+            var container = document.getElementById("container");
+            container.onclick = function (ev) {
+                var e = ev || window.event;
+                var target = e.target || window.event.srcElement;
+                if (target.innerHTML == '删除') {
+                    var memo = target.parentNode.parentNode.childNodes[3].childNodes[3].innerHTML;
 
-        // 在调用 showAllData 前条用该函数，以便擦除数据，重新加载
-        // function removeAllData() {
+                    db.transaction(function (tx) {
+                            tx.executeSql("DELETE FROM MsgData where message= ?", [memo], function (tx, rs) {
+                                location.reload();
+                                alert("删除成功！");
+                            }, function (tx, rs) {
+                                alert("删除失败! ");
+                            });
 
-        // }
 
-        // 显示数据，这是每次添加时调用
-        // function showData(rows) {
-        //     console.log(rows);
-        //     var showMsg = document.getElementById("showMsg");
-        //     var container = document.getElementById("container");
-        //     var templete = showMsg.cloneNode(true);
-        //     // templete.lastChild.firstChild.lastChild.textContent = rows
+                        })
 
-        //     container.appendChild(templete);
-
-        // }
-
-        // 显示全部数据，从数据库中取出所有数据
-        function showAllData() {
-            db.transaction(function (tx) {
-                tx.executeSql("create table if not exists MsgData(name TEXT,message TEXT,time INTEGER)", []);
-                tx.executeSql("select * from MsgData", [], function (tx, rs) {
-                    // console.log(rs);
-                    for (var i = 0; i < rs.rows.length; i++) {
-                        showAddData(rs.rows[i].name, rs.rows[i].message, rs.rows[i].time)
                     }
+                }
+            }
+
+            // 在调用 showAllData 前条用该函数，以便擦除数据，重新加载
+            // function removeAllData() {
+
+            // }
+
+            // 显示数据，这是每次添加时调用
+            // function showData(rows) {
+            //     console.log(rows);
+            //     var showMsg = document.getElementById("showMsg");
+            //     var container = document.getElementById("container");
+            //     var templete = showMsg.cloneNode(true);
+            //     // templete.lastChild.firstChild.lastChild.textContent = rows
+
+            //     container.appendChild(templete);
+
+            // }
+
+            // 显示全部数据，从数据库中取出所有数据
+            function showAllData() {
+                db.transaction(function (tx) {
+                    tx.executeSql("create table if not exists MsgData(name TEXT,message TEXT,time INTEGER)",
+                []);
+                    tx.executeSql("select * from MsgData", [], function (tx, rs) {
+                        for (var i = 0; i < rs.rows.length; i++) {
+                            showAddData(rs.rows[i].name, rs.rows[i].message, rs.rows[i].time)
+                        }
+                    })
                 })
-            })
-        }
+            }
 
-        // 追加数据，往数据库里面添加数据
-        function addData(name, message, time) {
-            db.transaction(function (tx) {
-                tx.executeSql("insert into MsgData values(?,?,?)", ["我的", message, time], function (tx, rs) {
-                        alert("保存成功！");
-                        showAddData("我的",message,time)
-                    }),
-                    function (tx, rs) {
-                        alert("保存失败！");
-                    }
-            })
-        }
+            // 追加数据，往数据库里面添加数据
+            function addData(name, message, time) {
+                db.transaction(function (tx) {
+                    tx.executeSql("insert into MsgData values(?,?,?)", ["我的", message, time], function (tx,
+                        rs) {
+                            alert("保存成功！");
+                            showAddData("我的", message, time)
+                        }),
+                        function (tx, rs) {
+                            alert("保存失败！");
+                        }
+                })
+            }
 
-        // 记录当前输入
-        function saveData() {
-            var name = null;
-            var memo = document.getElementById("textarea").value;
-            var time = new Date().format("yyyy-MM-dd");
-            addData(name, memo, time);
-            // showAddData(name,memo,time);
-            document.getElementById("textarea").value = "";
-        }
+            // 记录当前输入
+            function saveData() {
+                var name = null;
+                var memo = document.getElementById("textarea").value;
+                var time = new Date().format("yyyy-MM-dd");
+                addData(name, memo, time);
+                // showAddData(name,memo,time);
+                document.getElementById("textarea").value = "";
+            }
 
-        // 将提交的数据展示在页面上
-        function showAddData(name, memo, time) {
-            // console.log("调用成功")
-            var showMsg = document.getElementById("showMsg");
-            var container = document.getElementById("container");
-            var container = document.getElementById("container");
-            var templete = showMsg.cloneNode(true);
-            console.log(time);
-            templete.childNodes[3].childNodes[1].childNodes[1].innerHTML = "我的";
-            templete.childNodes[3].childNodes[1].childNodes[3].innerHTML = time;
-            templete.childNodes[3].childNodes[3].innerHTML = memo;
-            container.appendChild(templete);
-            // templete.lastChild.lastChild.innerHTML = memo;
-            // templete.lastChild.firstChild.lastChild.innerHTML = time;
-            // templete.lastChild.firstChild.firstChild.innerHTML = "我的";
-        }
+            // 将提交的数据展示在页面上
+            function showAddData(name, memo, time) {
+                // console.log("调用成功")
+                var showMsg = document.getElementById("showMsg");
+                var container = document.getElementById("container");
+                var container = document.getElementById("container");
+                var templete = showMsg.cloneNode(true);
+                // console.log(time);
+                templete.childNodes[3].childNodes[1].childNodes[1].innerHTML = "我的";
+                templete.childNodes[3].childNodes[1].childNodes[3].innerHTML = time;
+                templete.childNodes[3].childNodes[3].innerHTML = memo;
+                container.appendChild(templete);
+                // templete.lastChild.lastChild.innerHTML = memo;
+                // templete.lastChild.firstChild.lastChild.innerHTML = time;
+                // templete.lastChild.firstChild.firstChild.innerHTML = "我的";
+            }
     </script>
 </body>
 
