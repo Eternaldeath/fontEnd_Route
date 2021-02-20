@@ -1,0 +1,5 @@
+#menu{width: 50px; height: 20px; background: lightgray; border: 1px solid #8f8f8f;position: absolute;padding: 2px;border-radius: 3px;font-size: 12px;background-color: #fff;text-align: center;line-height: 20px;display: none;}
+
+#menu ul{list-style: none;}
+
+#menu li:hover{cursor: pointer;background-color: #8f8f8f;color: #fff;}

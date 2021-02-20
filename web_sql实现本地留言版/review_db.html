@@ -65,12 +65,13 @@
         .inputMsg .inputBox input:hover {
             background: black;
             color: white;
+            cursor: pointer;
         }
 
         .showMsg {
             display: flex;
             flex-direction: row;
-            border-top: 1px solid gray;
+            border-top: 3px solid gray;
             padding-top: 15px;
         }
 
@@ -109,6 +110,7 @@
             font-family: Helvetica;
         }
     </style>
+    <link rel="stylesheet" href="./rightClick.css">
 </head>
 
 <body>
@@ -127,11 +129,20 @@
                     <span class="name">我的</span>
                     <span class="time">时间</span>
                 </div>
-                <div class="showMainInfo">暂无内容</div>
+                <div class="showMainInfo">这是一个范例，暂无内容</div>
             </div>
         </div>
     </div>
 
+    <!-- 自定义右键菜单 -->
+    <div id="menu">
+        <ul>
+            <li>删除</li>
+        </ul>
+    </div>
+
+    <script src="./Date_format_tool.js"></script>
+    <script src="./rightClick.js"></script>
     <script>
         var datatable = null;
         var db = openDatabase('mydata', '', 'test db', 2 * 1024 * 1024);
@@ -145,22 +156,27 @@
             showAllData();
         }
 
-        // 在调用 showAllData 前条用该函数，以便擦除数据，重新加载
-        function removeAllData() {
-
+        // 删除数据
+        function(){
+            
         }
+
+        // 在调用 showAllData 前条用该函数，以便擦除数据，重新加载
+        // function removeAllData() {
+
+        // }
 
         // 显示数据，这是每次添加时调用
-        function showData(rows) {
-            console.log(rows);
-            var showMsg = document.getElementById("showMsg");
-            var container = document.getElementById("container");
-            var templete = showMsg.cloneNode(true);
-            // templete.lastChild.firstChild.lastChild.textContent = rows
+        // function showData(rows) {
+        //     console.log(rows);
+        //     var showMsg = document.getElementById("showMsg");
+        //     var container = document.getElementById("container");
+        //     var templete = showMsg.cloneNode(true);
+        //     // templete.lastChild.firstChild.lastChild.textContent = rows
 
-            container.appendChild(templete);
+        //     container.appendChild(templete);
 
-        }
+        // }
 
         // 显示全部数据，从数据库中取出所有数据
         function showAllData() {
@@ -180,6 +196,7 @@
             db.transaction(function (tx) {
                 tx.executeSql("insert into MsgData values(?,?,?)", ["我的", message, time], function (tx, rs) {
                         alert("保存成功！");
+                        showAddData("我的",message,time)
                     }),
                     function (tx, rs) {
                         alert("保存失败！");
@@ -191,7 +208,7 @@
         function saveData() {
             var name = null;
             var memo = document.getElementById("textarea").value;
-            var time = new Date();
+            var time = new Date().format("yyyy-MM-dd");
             addData(name, memo, time);
             // showAddData(name,memo,time);
             document.getElementById("textarea").value = "";
@@ -199,11 +216,16 @@
 
         // 将提交的数据展示在页面上
         function showAddData(name, memo, time) {
-            console.log("调用成功")
+            // console.log("调用成功")
             var showMsg = document.getElementById("showMsg");
             var container = document.getElementById("container");
+            var container = document.getElementById("container");
             var templete = showMsg.cloneNode(true);
-            console.log(templete.childNodes[3]);
+            console.log(time);
+            templete.childNodes[3].childNodes[1].childNodes[1].innerHTML = "我的";
+            templete.childNodes[3].childNodes[1].childNodes[3].innerHTML = time;
+            templete.childNodes[3].childNodes[3].innerHTML = memo;
+            container.appendChild(templete);
             // templete.lastChild.lastChild.innerHTML = memo;
             // templete.lastChild.firstChild.lastChild.innerHTML = time;
             // templete.lastChild.firstChild.firstChild.innerHTML = "我的";
