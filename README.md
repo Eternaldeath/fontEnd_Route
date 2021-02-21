@@ -54,7 +54,9 @@
 
 [在线天气查询](https://eternaldeath.github.io/fontEnd_Route/在线天气查询/06天气查询.html)
 
-[在线天气查询](https://eternaldeath.github.io/fontEnd_Route//web_sql实现本地留言版/review_db.html)
+[websql留言板](https://eternaldeath.github.io/fontEnd_Route//web_sql实现本地留言版/review_db.html)
+
+[Vue实现电影查询](https://eternaldeath.github.io/fontEnd_Route/movieInfo/movieinfo/dist/index.html)
 
 #### 小游戏
 
