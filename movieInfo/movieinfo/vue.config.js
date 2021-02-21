@@ -1,5 +1,5 @@
 module.exports = {
-    publicPath : '/movie',
+    publicPath : './',
     devServer: {
             proxy: {
             //   /api 部分填写需要对哪些请求进行代理
